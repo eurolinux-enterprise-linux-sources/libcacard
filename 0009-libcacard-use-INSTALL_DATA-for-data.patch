@@ -1,0 +1,29 @@
+From de660f3659162566b2b45b77fd403a9604674fcb Mon Sep 17 00:00:00 2001
+From: Alon Levy <alevy@redhat.com>
+Date: Thu, 28 Jul 2011 12:34:13 +0300
+Subject: [PATCH 09/14] libcacard: use INSTALL_DATA for data
+
+Signed-off-by: Alon Levy <alevy@redhat.com>
+---
+ libcacard/Makefile |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/libcacard/Makefile b/libcacard/Makefile
+index bc34bf2..5cd7594 100644
+--- a/libcacard/Makefile
++++ b/libcacard/Makefile
+@@ -55,9 +55,8 @@ install-libcacard: libcacard.pc libcacard.la vscclient
+ 	$(INSTALL_DIR) "$(DESTDIR)$(bindir)"
+ 	libtool --mode=install $(INSTALL_PROG) vscclient "$(DESTDIR)$(bindir)"
+ 	libtool --mode=install $(INSTALL_PROG) libcacard.la "$(DESTDIR)$(libdir)"
+-	libtool --mode=install $(INSTALL_PROG) libcacard.pc "$(DESTDIR)$(libdir)/pkgconfig"
++	libtool --mode=install $(INSTALL_DATA) libcacard.pc "$(DESTDIR)$(libdir)/pkgconfig"
+ 	for inc in *.h; do \
+-		libtool --mode=install $(INSTALL_PROG) $(libcacard_srcpath)/$$inc "$(DESTDIR)$(libcacard_includedir)"; \
++		libtool --mode=install $(INSTALL_DATA) $(libcacard_srcpath)/$$inc "$(DESTDIR)$(libcacard_includedir)"; \
+ 	done
+-
+ endif
+-- 
+1.7.6.4
+

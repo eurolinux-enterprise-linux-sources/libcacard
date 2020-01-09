@@ -1,0 +1,52 @@
+From 2782626c1615dc200a342654ccd837f7330e3d0f Mon Sep 17 00:00:00 2001
+From: Alon Levy <alevy@redhat.com>
+Date: Tue, 27 Sep 2011 17:19:25 +0300
+Subject: [PATCH 14/14] libcacard/vscclient: fix error paths for socket
+ creation
+
+---
+ libcacard/vscclient.c |    9 +++++++--
+ 1 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/libcacard/vscclient.c b/libcacard/vscclient.c
+index 69b2266..c875545 100644
+--- a/libcacard/vscclient.c
++++ b/libcacard/vscclient.c
+@@ -357,6 +357,7 @@ connect_to_qemu(
+     if (sock < 0) {
+         /* Error */
+         fprintf(stderr, "Error opening socket!\n");
++        return -1;
+     }
+ 
+     memset(&hints, 0, sizeof(struct addrinfo));
+@@ -370,13 +371,13 @@ connect_to_qemu(
+     if (ret != 0) {
+         /* Error */
+         fprintf(stderr, "getaddrinfo failed\n");
+-        return 5;
++        return -1;
+     }
+ 
+     if (connect(sock, server->ai_addr, server->ai_addrlen) < 0) {
+         /* Error */
+         fprintf(stderr, "Could not connect\n");
+-        return 5;
++        return -1;
+     }
+     if (verbose) {
+         printf("Connected (sizeof Header=%zd)!\n", sizeof(VSCMsgHeader));
+@@ -505,6 +506,10 @@ main(
+     qemu_host = strdup(argv[argc - 2]);
+     qemu_port = strdup(argv[argc - 1]);
+     sock = connect_to_qemu(qemu_host, qemu_port);
++    if (sock == -1) {
++        fprintf(stderr, "error opening socket, exiting.\n");
++        exit(5);
++    }
+ 
+     qemu_mutex_init(&write_lock);
+     qemu_mutex_init(&pending_reader_lock);
+-- 
+1.7.6.4
+

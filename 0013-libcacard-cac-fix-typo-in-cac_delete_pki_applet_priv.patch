@@ -1,0 +1,27 @@
+From 18c2a9fa305b860e46cacbef66c312d2bd66fd04 Mon Sep 17 00:00:00 2001
+From: Alon Levy <alevy@redhat.com>
+Date: Tue, 27 Sep 2011 17:18:50 +0300
+Subject: [PATCH 13/14] libcacard/cac: fix typo in
+ cac_delete_pki_applet_private
+
+---
+ libcacard/cac.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/libcacard/cac.c b/libcacard/cac.c
+index f34f63a..35d25fe 100644
+--- a/libcacard/cac.c
++++ b/libcacard/cac.c
+@@ -266,7 +266,8 @@ static void
+ cac_delete_pki_applet_private(VCardAppletPrivate *applet_private)
+ {
+     CACPKIAppletData *pki_applet_data = NULL;
+-    if (pki_applet_data == NULL) {
++
++    if (applet_private == NULL) {
+         return;
+     }
+     pki_applet_data = &(applet_private->u.pki_data);
+-- 
+1.7.6.4
+

@@ -1,0 +1,55 @@
+From 35b548f7817523a10f3825105febae14b5db427d Mon Sep 17 00:00:00 2001
+From: Christophe Fergeau <cfergeau@redhat.com>
+Date: Mon, 4 Jul 2011 18:10:43 +0200
+Subject: [PATCH 03/14] libcacard: don't leak vcard_emul_alloc_arrays mem
+
+vcard_emul_mirror_card and vcard_emul_init use
+vcard_emul_alloc_arrays to allocate memory for temporary arrays
+which will contain elements that in the end will be used one by
+one in cac_card_init. The arrays themselves are never stored
+anywhere, they are only used as temporary containers. Hence
+the memory that was allocated for these arrays should be freed
+after use or they will be leaked.
+---
+ libcacard/vcard_emul_nss.c |   11 ++++++++++-
+ 1 files changed, 10 insertions(+), 1 deletions(-)
+
+diff --git a/libcacard/vcard_emul_nss.c b/libcacard/vcard_emul_nss.c
+index 0f50954..f1763f5 100644
+--- a/libcacard/vcard_emul_nss.c
++++ b/libcacard/vcard_emul_nss.c
+@@ -597,6 +597,7 @@ vcard_emul_mirror_card(VReader *vreader)
+     VCardKey **keys;
+     PK11SlotInfo *slot;
+     PRBool ret;
++    VCard *card;
+ 
+     slot = vcard_emul_reader_get_slot(vreader);
+     if (slot == NULL) {
+@@ -656,7 +657,12 @@ vcard_emul_mirror_card(VReader *vreader)
+     }
+ 
+     /* now create the card */
+-    return vcard_emul_make_card(vreader, certs, cert_len, keys, cert_count);
++    card = vcard_emul_make_card(vreader, certs, cert_len, keys, cert_count);
++    qemu_free(certs);
++    qemu_free(cert_len);
++    qemu_free(keys);
++
++    return card;
+ }
+ 
+ static VCardEmulType default_card_type = VCARD_EMUL_NONE;
+@@ -941,6 +947,9 @@ vcard_emul_init(const VCardEmulOptions *options)
+             vreader_free(vreader);
+             has_readers = PR_TRUE;
+         }
++        qemu_free(certs);
++        qemu_free(cert_len);
++        qemu_free(keys);
+     }
+ 
+     /* if we aren't suppose to use hw, skip looking up hardware tokens */
+-- 
+1.7.6.4
+

@@ -1,0 +1,113 @@
+From baaacfc6b959d8ed454ce8472458246ba58c9f62 Mon Sep 17 00:00:00 2001
+From: Christophe Fergeau <cfergeau@redhat.com>
+Date: Fri, 22 Jul 2011 13:42:19 +0200
+Subject: [PATCH 06/14] libcacard: introduce NEXT_TOKEN macro
+
+vcard_emul_options now has repetitive code to read the current
+token and advance to the next. After the previous changes,
+this repetitive code can be moved in a NEXT_TOKEN macro to
+avoid having this code duplicated.
+
+Signed-off-by: Christophe Fergeau <cfergeau@redhat.com>
+Reviewed-by: Alon Levy <alevy@redhat.com>
+---
+ libcacard/vcard_emul_nss.c |   71 +++++++++++++++-----------------------------
+ 1 files changed, 24 insertions(+), 47 deletions(-)
+
+diff --git a/libcacard/vcard_emul_nss.c b/libcacard/vcard_emul_nss.c
+index 3360f6c..1a24acf 100644
+--- a/libcacard/vcard_emul_nss.c
++++ b/libcacard/vcard_emul_nss.c
+@@ -1105,6 +1105,26 @@ find_blank(const char *str)
+ static VCardEmulOptions options;
+ #define READER_STEP 4
+ 
++/* Expects "args" to be at the beginning of a token (ie right after the ','
++ * ending the previous token), and puts the next token start in "token",
++ * and its length in "token_length". "token" will not be nul-terminated.
++ * After calling the macro, "args" will be advanced to the beginning of
++ * the next token.
++ * This macro may call continue or break.
++ */
++#define NEXT_TOKEN(token) \
++            (token) = args; \
++            args = strpbrk(args, ",)"); \
++            if (*args == 0) { \
++                break; \
++            } \
++            if (*args == ')') { \
++                args++; \
++                continue; \
++            } \
++            (token##_length) = args - (token); \
++            args = strip(args+1);
++
+ VCardEmulOptions *
+ vcard_emul_options(const char *args)
+ {
+@@ -1140,58 +1160,15 @@ vcard_emul_options(const char *args)
+             }
+             args = strip(args+1);
+ 
+-            name = args;
+-            args = strpbrk(args, ",)");
+-            if (*args == 0) {
+-                break;
+-            }
+-            if (*args == ')') {
+-                args++;
+-                continue;
+-            }
+-            name_length = args - name;
+-            args = strip(args+1);
+-
+-            vname = args;
+-            args = strpbrk(args, ",)");
+-            if (*args == 0) {
+-                break;
+-            }
+-            if (*args == ')') {
+-                args++;
+-                continue;
+-            }
+-            vname_length = args - vname;
+-            args = strip(args+1);
+-
+-            type_params = args;
+-            args = strpbrk(args, ",)");
+-            if (*args == 0) {
+-                break;
+-            }
+-            if (*args == ')') {
+-                args++;
+-                continue;
+-            }
+-            type_params_length = args - type_params;
+-            args = strip(args+1);
+-
++            NEXT_TOKEN(name)
++            NEXT_TOKEN(vname)
++            NEXT_TOKEN(type_params)
+             type_params_length = MIN(type_params_length, sizeof(type_str)-1);
+             strncpy(type_str, type_params, type_params_length);
+             type_str[type_params_length] = 0;
+             type = vcard_emul_type_from_string(type_str);
+ 
+-            type_params = args;
+-            args = strpbrk(args, ",)");
+-            if (*args == 0) {
+-                break;
+-            }
+-            if (*args == ')') {
+-                args++;
+-                continue;
+-            }
+-            type_params_length = args - type_params;
+-            args = strip(args+1);
++            NEXT_TOKEN(type_params)
+ 
+             if (*args == 0) {
+                 break;
+-- 
+1.7.6.4
+

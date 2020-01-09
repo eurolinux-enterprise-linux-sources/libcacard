@@ -1,12 +1,27 @@
 Name:           libcacard
-Version:        0.1.2
+Version:        0.15.0
+
 Release:        2%{?dist}
 Summary:        Common Access Card (CAC) Emulation
 Group:          System Environment/Libraries
 License:        LGPLv2+
-URL:            http://www.spice-space.org/download
-Source0:        http://www.spice-space.org/download/libcacard/libcacard-%{version}.tar.bz2
-BuildRequires:  nss-devel >= 3.12
+URL:            http://www.qemu.org/
+Source0:        http://wiki.qemu.org/download/qemu-%{version}.tar.gz
+BuildRequires:  nss-devel >= 3.12 libtool glib2-devel
+Patch00:        0001-drop-zlib-check.patch
+Patch01:        0002-libcacard-vcard_emul_nss-support-cards-lying-about-C.patch
+Patch02:        0003-libcacard-don-t-leak-vcard_emul_alloc_arrays-mem.patch
+Patch03:        0004-libcacard-s-strip-args-strip-args-1.patch
+Patch04:        0005-libcacard-fix-soft-.-parsing-in-vcard_emul_options.patch
+Patch05:        0006-libcacard-introduce-NEXT_TOKEN-macro.patch
+Patch06:        0007-libcacard-replace-copy_string-with-strndup.patch
+Patch07:        0008-libcacard-add-pc-file-install-it-includes.patch
+Patch08:        0009-libcacard-use-INSTALL_DATA-for-data.patch
+Patch09:        0010-Fix-spelling-in-comments-and-debug-messages-recieve-.patch
+Patch10:        0011-Improvements-to-libtool-support.patch
+Patch11:        0012-Silence-make-if-nothing-is-to-do-for-libcacard.patch
+Patch12:        0013-libcacard-cac-fix-typo-in-cac_delete_pki_applet_priv.patch
+Patch13:        0014-libcacard-vscclient-fix-error-paths-for-socket-creat.patch
 
 ExclusiveArch:  i686 x86_64
 
@@ -30,15 +45,34 @@ Requires:       %{name} = %{version}-%{release}
 CAC emulation development files.
 
 %prep
-%setup -q
+%setup -n qemu-%{version} -q
+%patch00 -p1
+%patch01 -p1
+%patch02 -p1
+%patch03 -p1
+%patch04 -p1
+%patch05 -p1
+%patch06 -p1
+%patch07 -p1
+%patch08 -p1
+%patch09 -p1
+%patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%patch13 -p1
 
 %build
-%configure
-make %{?_smp_mflags}
+./configure --prefix=%{_prefix} --libdir=%{_libdir} --disable-guest-agent --target-list=x86_64-softmmu
+
+# make sure libcacard.txt is the README
+cp -f docs/libcacard.txt README
+
+make libcacard.la %{?_smp_mflags}
+make -C libcacard vscclient
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+make install-libcacard DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 
 %post -p /sbin/ldconfig
@@ -61,6 +95,36 @@ find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 %{_bindir}/vscclient
 
 %changelog
+* Tue Oct 11 2011 Alon Levy <alevy@redhat.com> - 0.15.0
+ - not a rebase - no changes in libcacard subdirectory
+   between 0.15.0-rc0 and 0.15.0 in the upstream package.
+  - but allows the fedora and RHEL package to remain in sync
+    on a released version.
+ - dropped zlib dep which was only required for configure phase
+   via added patch 0001-drop-zlib-check.patch
+ - added three patches that only cleanup the build process
+   0010-Fix-spelling-in-comments-and-debug-messages-recieve-.patch
+   0011-Improvements-to-libtool-support.patch
+   0012-Silence-make-if-nothing-is-to-do-for-libcacard.patch
+ - Final two patches resolve the bug 727916:
+   0013-libcacard-cac-fix-typo-in-cac_delete_pki_applet_priv.patch
+   0014-libcacard-vscclient-fix-error-paths-for-socket-creat.patch
+ - Resolves: rhbz#727916
+
+* Thu Jul 28 2011 Alon Levy <alevy@redhat.com> - 0.14.90-2
+ - fix permissions of h files to not change because of rebase.
+ - change NVR to match libcacard.so
+   - will change when qemu-0.15.0 is released.
+ - Copied correct README
+ - Resolves: rhbz#723895
+
+* Tue Jul 26 2011 Alon Levy <alevy@redhat.com> - 0.15.0-rc0
+- upstream update, it is now qemu based, so build process changed, and version to match.
+ - no non-rc release yet of qemu with required patches, hence using rc0. There are still
+   some patches carried here that hopefully will get into 0.15.0 or 0.16.0 in the latest.
+ - upstream updated to 0.15.0-rc0
+ - resolves rhbz#723895
+
 * Fri Feb 04 2011 Uri Lublin <uril@redhat.com> - 0.1.2-2
  - ExclusiveArch:  i686 x86_64
   Resolves: rhbz#663063

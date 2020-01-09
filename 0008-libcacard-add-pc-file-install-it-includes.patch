@@ -1,0 +1,126 @@
+From 4c283cf1c158c5e757beae44b55a08be91efe592 Mon Sep 17 00:00:00 2001
+From: Alon Levy <alevy@redhat.com>
+Date: Mon, 27 Jun 2011 11:58:20 +0200
+Subject: [PATCH 08/14] libcacard: add pc file, install it + includes
+
+Additionally:
+ + add --includedir configure parameters
+ + make install-libcacard install vscclient as well
+---
+ configure                 |    5 +++++
+ libcacard/Makefile        |   27 ++++++++++++++++++++++++---
+ libcacard/libcacard.pc.in |   13 +++++++++++++
+ 3 files changed, 42 insertions(+), 3 deletions(-)
+ create mode 100644 libcacard/libcacard.pc.in
+
+diff --git a/configure b/configure
+index 2c1da6a..80827e8 100755
+--- a/configure
++++ b/configure
+@@ -146,6 +146,7 @@ datadir="\${prefix}/share/qemu"
+ docdir="\${prefix}/share/doc/qemu"
+ bindir="\${prefix}/bin"
+ libdir="\${prefix}/lib"
++includedir="\${prefix}/include"
+ sysconfdir="\${prefix}/etc"
+ confsuffix="/qemu"
+ slirp="yes"
+@@ -540,6 +541,8 @@ for opt do
+   ;;
+   --libdir=*) libdir="$optarg"
+   ;;
++  --includedir=*) includedir="$optarg"
++  ;;
+   --datadir=*) datadir="$optarg"
+   ;;
+   --docdir=*) docdir="$optarg"
+@@ -2561,6 +2564,7 @@ echo "Install prefix    $prefix"
+ echo "BIOS directory    `eval echo $datadir`"
+ echo "binary directory  `eval echo $bindir`"
+ echo "library directory `eval echo $libdir`"
++echo "include directory `eval echo $includedir`"
+ echo "config directory  `eval echo $sysconfdir`"
+ if test "$mingw32" = "no" ; then
+ echo "Manual directory  `eval echo $mandir`"
+@@ -2655,6 +2659,7 @@ echo all: >> $config_host_mak
+ echo "prefix=$prefix" >> $config_host_mak
+ echo "bindir=$bindir" >> $config_host_mak
+ echo "libdir=$libdir" >> $config_host_mak
++echo "includedir=$includedir" >> $config_host_mak
+ echo "mandir=$mandir" >> $config_host_mak
+ echo "datadir=$datadir" >> $config_host_mak
+ echo "sysconfdir=$sysconfdir" >> $config_host_mak
+diff --git a/libcacard/Makefile b/libcacard/Makefile
+index 9802c37..bc34bf2 100644
+--- a/libcacard/Makefile
++++ b/libcacard/Makefile
+@@ -2,7 +2,10 @@
+ -include $(SRC_PATH)/Makefile.objs
+ -include $(SRC_PATH)/rules.mak
+ 
+-$(call set-vpath, $(SRC_PATH):$(SRC_PATH)/libcacard)
++libcacard_srcpath=$(SRC_PATH)/libcacard
++libcacard_includedir=$(includedir)/cacard
++
++$(call set-vpath, $(SRC_PATH):$(libcacard_srcpath))
+ 
+ # objects linked against normal qemu binaries, not compiled with libtool
+ QEMU_OBJS=$(addprefix ../,$(oslib-obj-y) qemu-malloc.o qemu-timer-common.o $(trace-obj-y))
+@@ -18,7 +21,7 @@ vscclient: $(libcacard-y) $(QEMU_OBJS) vscclient.o
+ 	$(call quiet-command,$(CC) $(libcacard_libs) -lrt -o $@ $^,"  LINK  $@")
+ 
+ clean:
+-	rm -f *.o */*.o *.d */*.d *.a */*.a *~ */*~ vscclient *.lo .libs/* *.la
++	rm -f *.o */*.o *.d */*.d *.a */*.a *~ */*~ vscclient *.lo .libs/* *.la *.pc
+ 	rm -Rf .libs
+ 
+ all: vscclient
+@@ -36,7 +39,25 @@ else
+ libcacard.la: $(libcacard.lib-y) $(QEMU_OBJS_LIB)
+ 	$(call quiet-command,libtool --mode=link --quiet --tag=CC $(CC) $(libcacard_libs) -lrt -rpath $(libdir) -o $@ $^,"  lt LINK $@")
+ 
+-install-libcacard: libcacard.la
++libcacard.pc: $(libcacard_srcpath)/libcacard.pc.in
++	sed -e 's|@LIBDIR@|$(libdir)|' \
++		-e 's|@INCLUDEDIR@|$(libcacard_includedir)|' \
++	    -e 's|@VERSION@|$(shell cat $(SRC_PATH)/VERSION)|' \
++		-e 's|@PREFIX@|$(prefix)|' \
++		< $(libcacard_srcpath)/libcacard.pc.in > libcacard.pc
++
++.PHONY: install-libcacard
++
++install-libcacard: libcacard.pc libcacard.la vscclient
+ 	$(INSTALL_DIR) "$(DESTDIR)$(libdir)"
++	$(INSTALL_DIR) "$(DESTDIR)$(libdir)/pkgconfig"
++	$(INSTALL_DIR) "$(DESTDIR)$(libcacard_includedir)"
++	$(INSTALL_DIR) "$(DESTDIR)$(bindir)"
++	libtool --mode=install $(INSTALL_PROG) vscclient "$(DESTDIR)$(bindir)"
+ 	libtool --mode=install $(INSTALL_PROG) libcacard.la "$(DESTDIR)$(libdir)"
++	libtool --mode=install $(INSTALL_PROG) libcacard.pc "$(DESTDIR)$(libdir)/pkgconfig"
++	for inc in *.h; do \
++		libtool --mode=install $(INSTALL_PROG) $(libcacard_srcpath)/$$inc "$(DESTDIR)$(libcacard_includedir)"; \
++	done
++
+ endif
+diff --git a/libcacard/libcacard.pc.in b/libcacard/libcacard.pc.in
+new file mode 100644
+index 0000000..b6859b0
+--- /dev/null
++++ b/libcacard/libcacard.pc.in
+@@ -0,0 +1,13 @@
++prefix=@PREFIX@
++exec_prefix=${prefix}
++libdir=@LIBDIR@
++includedir=@INCLUDEDIR@
++
++Name: cacard
++Description: CA Card library
++Version: @VERSION@
++
++Requires:  nss
++Libs: -L${libdir} -lcacard
++Libs.private:
++Cflags: -I${includedir}
+-- 
+1.7.6.4
+

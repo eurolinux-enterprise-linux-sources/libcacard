@@ -1,0 +1,27 @@
+From 572aca974a3e26b673c7d9c663da3a524837e7ac Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Wed, 21 Sep 2011 09:18:32 +0200
+Subject: [PATCH 12/14] Silence make if nothing is to do for libcacard
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+---
+ libcacard/Makefile |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/libcacard/Makefile b/libcacard/Makefile
+index feedb70..262d4be 100644
+--- a/libcacard/Makefile
++++ b/libcacard/Makefile
+@@ -25,6 +25,8 @@ clean:
+ 	rm -Rf .libs
+ 
+ all: vscclient
++# Dummy command so that make thinks it has done something
++	@true
+ 
+ #########################################################################
+ # Rules for building libcacard standalone library
+-- 
+1.7.6.4
+

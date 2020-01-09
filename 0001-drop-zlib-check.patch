@@ -1,0 +1,40 @@
+From 88f700460400f5cdd8b17828bddba7384d1cd71b Mon Sep 17 00:00:00 2001
+From: Alon Levy <alevy@redhat.com>
+Date: Mon, 3 Oct 2011 11:04:38 +0200
+Subject: [PATCH 01/14] drop zlib check
+
+---
+ configure |   17 -----------------
+ 1 files changed, 0 insertions(+), 17 deletions(-)
+
+diff --git a/configure b/configure
+index 6911c3b..2c1da6a 100755
+--- a/configure
++++ b/configure
+@@ -1177,23 +1177,6 @@ EOF
+ fi
+ 
+ ##########################################
+-# zlib check
+-
+-cat > $TMPC << EOF
+-#include <zlib.h>
+-int main(void) { zlibVersion(); return 0; }
+-EOF
+-if compile_prog "" "-lz" ; then
+-    :
+-else
+-    echo
+-    echo "Error: zlib check failed"
+-    echo "Make sure to have the zlib libs and headers installed."
+-    echo
+-    exit 1
+-fi
+-
+-##########################################
+ # xen probe
+ 
+ if test "$xen" != "no" ; then
+-- 
+1.7.6.4
+

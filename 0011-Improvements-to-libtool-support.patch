@@ -1,0 +1,109 @@
+From 2fe25181a92bca009091a9c92fb47eeda1e3f4e3 Mon Sep 17 00:00:00 2001
+From: Brad <brad@comstyle.com>
+Date: Sat, 13 Aug 2011 20:30:14 -0400
+Subject: [PATCH 11/14] Improvements to libtool support.
+
+Cherry-pick of 3f53458137b6154acfa5bfe05efe8bd67f6d1778
+
+Improvements to the libtool support in QEMU. Replace hard coded
+libtool in the infrastructure with $(LIBTOOL) and allow
+overriding the libtool binary used via the configure
+script.
+
+Reviewed-by: Andreas F=E4rber <andreas.faerber@web.de>
+Signed-off-by: Brad Smith <brad@comstyle.com>
+Signed-off-by: Anthony Liguori <aliguori@us.ibm.com>
+
+Conflicts:
+
+	configure
+	libcacard/Makefile
+	rules.mak
+---
+ Makefile.objs      |    2 +-
+ configure          |    5 ++---
+ libcacard/Makefile |   10 +++++-----
+ rules.mak          |    2 +-
+ 4 files changed, 9 insertions(+), 10 deletions(-)
+
+diff --git a/Makefile.objs b/Makefile.objs
+index 6991a9f..d6bbbc2 100644
+--- a/Makefile.objs
++++ b/Makefile.objs
+@@ -353,7 +353,7 @@ trace-dtrace.lo: trace-dtrace.dtrace
+ 	@echo "missing libtool. please install and rerun configure."; exit 1
+ else
+ trace-dtrace.lo: trace-dtrace.dtrace
+-	$(call quiet-command,libtool --mode=compile --tag=CC dtrace -o $@ -G -s $<, "  lt GEN trace-dtrace.o")
++	$(call quiet-command,$(LIBTOOL) --mode=compile --tag=CC dtrace -o $@ -G -s $<, "  lt GEN trace-dtrace.o")
+ endif
+ 
+ simpletrace.o: simpletrace.c $(GENERATED_HEADERS)
+diff --git a/configure b/configure
+index 80827e8..d6ed352 100755
+--- a/configure
++++ b/configure
+@@ -222,6 +222,7 @@ cc="${cross_prefix}${CC-gcc}"
+ ar="${cross_prefix}${AR-ar}"
+ objcopy="${cross_prefix}${OBJCOPY-objcopy}"
+ ld="${cross_prefix}${LD-ld}"
++libtool="${LIBTOOL-${cross_prefix}libtool}"
+ strip="${cross_prefix}${STRIP-strip}"
+ windres="${cross_prefix}${WINDRES-windres}"
+ pkg_config="${cross_prefix}${PKG_CONFIG-pkg-config}"
+@@ -1299,10 +1300,8 @@ fi
+ ##########################################
+ # libtool probe
+ 
+-if ! has libtool; then
++if ! has $libtool; then
+     libtool=
+-else
+-    libtool=libtool
+ fi
+ 
+ ##########################################
+diff --git a/libcacard/Makefile b/libcacard/Makefile
+index 5cd7594..feedb70 100644
+--- a/libcacard/Makefile
++++ b/libcacard/Makefile
+@@ -37,7 +37,7 @@ install-libcacard:
+ 	@echo "libtool is missing, please install and rerun configure"; exit 1
+ else
+ libcacard.la: $(libcacard.lib-y) $(QEMU_OBJS_LIB)
+-	$(call quiet-command,libtool --mode=link --quiet --tag=CC $(CC) $(libcacard_libs) -lrt -rpath $(libdir) -o $@ $^,"  lt LINK $@")
++	$(call quiet-command,$(LIBTOOL) --mode=link --quiet --tag=CC $(CC) -rpath $(libdir) -o $@ $^ $(libcacard_libs) -lrt,"  lt LINK $@")
+ 
+ libcacard.pc: $(libcacard_srcpath)/libcacard.pc.in
+ 	sed -e 's|@LIBDIR@|$(libdir)|' \
+@@ -53,10 +53,10 @@ install-libcacard: libcacard.pc libcacard.la vscclient
+ 	$(INSTALL_DIR) "$(DESTDIR)$(libdir)/pkgconfig"
+ 	$(INSTALL_DIR) "$(DESTDIR)$(libcacard_includedir)"
+ 	$(INSTALL_DIR) "$(DESTDIR)$(bindir)"
+-	libtool --mode=install $(INSTALL_PROG) vscclient "$(DESTDIR)$(bindir)"
+-	libtool --mode=install $(INSTALL_PROG) libcacard.la "$(DESTDIR)$(libdir)"
+-	libtool --mode=install $(INSTALL_DATA) libcacard.pc "$(DESTDIR)$(libdir)/pkgconfig"
++	$(LIBTOOL) --mode=install $(INSTALL_PROG) vscclient "$(DESTDIR)$(bindir)"
++	$(LIBTOOL) --mode=install $(INSTALL_PROG) libcacard.la "$(DESTDIR)$(libdir)"
++	$(LIBTOOL) --mode=install $(INSTALL_DATA) libcacard.pc "$(DESTDIR)$(libdir)/pkgconfig"
+ 	for inc in *.h; do \
+-		libtool --mode=install $(INSTALL_DATA) $(libcacard_srcpath)/$$inc "$(DESTDIR)$(libcacard_includedir)"; \
++		$(LIBTOOL) --mode=install $(INSTALL_DATA) $(libcacard_srcpath)/$$inc "$(DESTDIR)$(libcacard_includedir)"; \
+ 	done
+ endif
+diff --git a/rules.mak b/rules.mak
+index 612ae37..745781c 100644
+--- a/rules.mak
++++ b/rules.mak
+@@ -22,7 +22,7 @@ ifeq ($(LIBTOOL),)
+ 	@echo "missing libtool. please install and rerun configure"; exit 1
+ else
+ %.lo: %.c
+-	$(call quiet-command,libtool --mode=compile --quiet --tag=CC $(CC) $(QEMU_CFLAGS) $(QEMU_INCLUDES) $(QEMU_DGFLAGS) $(CFLAGS) -c -o $@ $<,"  lt CC $@")
++	$(call quiet-command,$(LIBTOOL) --mode=compile --quiet --tag=CC $(CC) $(QEMU_INCLUDES) $(QEMU_CFLAGS) $(QEMU_DGFLAGS) $(CFLAGS) -c -o $@ $<,"  lt CC $@")
+ endif
+ 
+ %.o: %.S
+-- 
+1.7.6.4
+
