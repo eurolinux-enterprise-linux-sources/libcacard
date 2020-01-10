@@ -1,0 +1,3211 @@
+commit 998db1e88eb8219264476c022d1446f3cb4330e8
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Thu Dec 3 15:29:50 2015 +0100
+
+    Remove libcacard.h warning
+    
+    qemu.git uses -Werror by default, and this is problematic as 2.5.0
+    doesn't use libcacard.h and it breaks some developpers setup.
+    
+    Remove the warning and release 2.5.2.
+    
+    This change can be reverted in a near future (after 2.5.0 release and
+    a qemu patch is merged?)
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@gmail.com>
+
+ NEWS                  | 5 +++++
+ src/cac.h             | 4 ----
+ src/capcsc.h          | 4 ----
+ src/card_7816.h       | 4 ----
+ src/card_7816t.h      | 4 ----
+ src/eventt.h          | 4 ----
+ src/vcard.h           | 4 ----
+ src/vcard_emul.h      | 4 ----
+ src/vcard_emul_type.h | 4 ----
+ src/vcardt.h          | 4 ----
+ src/vevent.h          | 4 ----
+ src/vreader.h         | 4 ----
+ src/vreadert.h        | 4 ----
+ src/vscard_common.h   | 4 ----
+ 14 files changed, 5 insertions(+), 52 deletions(-)
+
+commit e3e378082d623ec9a9a1f7cf065a1efa0634abd8
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Tue Nov 24 15:32:59 2015 +0100
+
+    NEWS: update for 2.5.1 release
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@gmail.com>
+
+ NEWS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit b4a8eb7629053c27e66d9c334f61a58be88f4270
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Tue Nov 24 13:47:32 2015 +0100
+
+    Add travis.yml
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@gmail.com>
+
+ .travis.yml | 25 +++++++++++++++++++++++++
+ README.md   |  4 +++-
+ 2 files changed, 28 insertions(+), 1 deletion(-)
+
+commit 676c6ebfa90d387371197f38a1f78cfeadc67b9a
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Tue Nov 24 13:47:13 2015 +0100
+
+    build-sys: build-aux/test-driver is already disted
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@gmail.com>
+
+ Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit d134e0a7a919ac9b0f899966bf1b7a098a75559e
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Tue Nov 24 13:46:32 2015 +0100
+
+    build-sys: show correct pcsc summary
+    
+    Show no if PCSC is disabled
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@gmail.com>
+
+ configure.ac | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 829f914305033a1bdf2f89754904b03d7da99e84
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Thu Nov 19 13:29:15 2015 +0100
+
+    libcacard: add G_BEGIN/END_DECLS
+    
+    If the compiler in use is a C++ compiler, adds extern "C" around the
+    header.
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@gmail.com>
+
+ src/libcacard.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit 09499297fb5a73fe1b6bf080d23e24d897040fd0
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Thu Nov 19 13:28:06 2015 +0100
+
+    libcacard: add a warning for libcacard.h inclusion
+    
+    Only libcacard.h should be included directly.
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@gmail.com>
+
+ Makefile.am           | 1 +
+ src/cac.h             | 5 +++++
+ src/capcsc.h          | 4 ++++
+ src/card_7816.h       | 4 ++++
+ src/card_7816t.h      | 4 ++++
+ src/eventt.h          | 5 +++++
+ src/libcacard.h       | 2 ++
+ src/vcard.h           | 4 ++++
+ src/vcard_emul.h      | 4 ++++
+ src/vcard_emul_type.h | 5 +++++
+ src/vcardt.h          | 4 ++++
+ src/vevent.h          | 5 +++++
+ src/vreader.h         | 4 ++++
+ src/vreadert.h        | 4 ++++
+ src/vscard_common.h   | 4 ++++
+ 15 files changed, 59 insertions(+)
+
+commit 2d273ec90f86e94cd18c6e6fc8a531acaa3d40d2
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Thu Nov 19 13:25:03 2015 +0100
+
+    Include glib.h in public header
+    
+    vscard_common.h uses glib G_BYTE_ORDER macros. Include glib.h in the
+    file, and thus move glib-2.0 as a Require package.
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@gmail.com>
+
+ libcacard.pc.in     | 3 ++-
+ src/vscard_common.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+commit 7efc9cda2f1c908ec6c388c216391fdc1c0dfbfb
+Author: Jeremy White <jwhite@codeweavers.com>
+Date:   Wed Oct 14 09:37:46 2015 -0500
+
+    Add m4/pkg.m4 to the list of expected m4 files.
+    
+    This gets it into the .gitignore, and gets it cleaned
+    by a maintainer-clean.
+
+ Makefile.am | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit b4a54e79fbf0b869bc92f80b374bd4c5cd8872dc
+Author: Jeremy White <jwhite@codeweavers.com>
+Date:   Wed Oct 14 09:34:44 2015 -0500
+
+    Add our own auto foo files to support AX_APPEND_LINK_FLAGS and AX_CHECK_LINK_FLAGS.
+
+ m4/ax_append_link_flags.m4 | 63 +++++++++++++++++++++++++++++++++++++++
+ m4/ax_check_link_flag.m4   | 74 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 137 insertions(+)
+
+commit f4f83937383c14982be6e2e71b05c39b9e68a00f
+Author: Jeremy White <jwhite@codeweavers.com>
+Date:   Mon Oct 12 11:05:55 2015 -0500
+
+    Add gthread libraries to link flags for the test.
+    
+    Fixes 'make check' on Debian.
+
+ Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e8e458f72e6cf1ee88a5314353b7c426621fda2d
+Author: Christophe Fergeau <cfergeau@redhat.com>
+Date:   Fri Oct 9 19:27:58 2015 +0200
+
+    build-sys: Add git-version-gen to EXTRA_DIST
+    
+    Without it, running autoreconf -fi from a tarball is going to spew a lot
+    of warnings about this missing file, and afterwards, ./configure will
+    generate version-less .pc files.
+
+ Makefile.am | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit 388cf82d44a753a1dc293b4a40a52d415bdded6e
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Mon Oct 12 11:13:30 2015 +0200
+
+    Remove link_test.c
+    
+    This test was not automated and is now redundant with make check tests
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ docs/libcacard.txt |  1 -
+ src/link_test.c    | 22 ----------------------
+ 2 files changed, 23 deletions(-)
+
+commit 0fcaf1b09e7924804485d82d9b2af38c5f78ebd1
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Thu Oct 8 17:33:08 2015 +0200
+
+    NEWS: update for upcoming 2.5.1
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ NEWS | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+commit 5868de27055019ecf4bad31c57c24afb97c893af
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Sat Sep 5 01:32:15 2015 +0200
+
+    build-sys: move G_LOG_DOMAIN to CPPFLAGS
+    
+    So the whole project use the same log domain.
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ Makefile.am   | 1 +
+ src/vreader.c | 5 -----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
+
+commit 77a128302ca65c17ab9c7b85f4e9777b56a92fa6
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Mon Aug 31 20:26:10 2015 +0200
+
+    Add some tests & code coverage
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ Makefile.am             |  31 ++-
+ build-aux/glib-tap.mk   | 150 +++++++++++
+ build-aux/tap-driver.sh | 652 ++++++++++++++++++++++++++++++++++++++++++++++++
+ build-aux/tap-test      |   5 +
+ configure.ac            |   4 +-
+ m4/glibtests.m4         |  28 +++
+ tests/db/cert8.db       | Bin 0 -> 65536 bytes
+ tests/db/key3.db        | Bin 0 -> 16384 bytes
+ tests/db/secmod.db      | Bin 0 -> 16384 bytes
+ tests/libcacard.c       | 239 ++++++++++++++++++
+ 10 files changed, 1103 insertions(+), 6 deletions(-)
+
+commit bf81602270d7a45a1bdcd1a7ebfafde5bed6d38b
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Mon Aug 31 20:55:01 2015 +0200
+
+    Add libcacard.h
+    
+    A top-level header file is often easier to deal with for programs
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ Makefile.am     |  1 +
+ src/libcacard.h | 21 +++++++++++++++++++++
+ 2 files changed, 22 insertions(+)
+
+commit 3753cf2843c06d65b8560be3bf3753000daf6b52
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Mon Aug 31 20:53:54 2015 +0200
+
+    build-sys: do not install vcardt_internal.h
+    
+    It was not in the exported symbols, so it shouldn't hurt to remove it now.
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e387a3212c02da4ffc1349184792c42a5c4a2fd5
+Author: Thomas Huth <thuth@linux.vnet.ibm.com>
+Date:   Thu Mar 19 15:53:50 2015 +0100
+
+    libcacard: Fix bug detected with 'smatch'
+    
+    'smatch' complains about two bugs and one style issue in card_7816.c:
+    
+    libcacard/card_7816.c:273 vcard_apdu_set_length() warn: should this be a bitwise op?
+    libcacard/card_7816.c:295 vcard_apdu_set_length() warn: should this be a bitwise op?
+    libcacard/card_7816.c:661 vcard7816_vm_process_apdu() warn: inconsistent indenting
+    
+    ... and indeed, the code seems to be wrong here. Let's fix this
+    by using a bitwise OR instead of logical OR and by indenting
+    the code with the right level.
+    
+    Signed-off-by: Thomas Huth <thuth@linux.vnet.ibm.com>
+    Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ src/card_7816.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 4168dc6c6e25142ebf91ffb621636c9eec6ef8dc
+Author: Jeremy White <jwhite@codeweavers.com>
+Date:   Tue Jan 20 08:46:26 2015 -0600
+
+    vscclient: remove the (broken) passthru option
+    
+    USE_PASSTHRU was not implemented and -p was useless.
+    
+    That option can be achieved using -e "use_hw=yes hw_type=passthru"
+    
+    Signed-off-by: Jeremy White <jwhite@codeweavers.com>
+    Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ src/vscclient.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
+
+commit 8152a4c01d895ac708886cdd78330c5c7f8f8011
+Author: Jeremy White <jwhite@codeweavers.com>
+Date:   Tue Jan 20 08:42:42 2015 -0600
+
+    Enable support for passthru
+    
+    Enable support for passthru (e.g. direct to pcsc) smart cards in the
+    emul_options entry point in libcacard.
+    
+    Signed-off-by: Jeremy White <jwhite@codeweavers.com>
+    Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ src/vcard_emul_nss.c  | 28 +++++++++++++++++++++++++++-
+ src/vcard_emul_type.c |  3 ++-
+ 2 files changed, 29 insertions(+), 2 deletions(-)
+
+commit 226653d227909294248e91a6e114e1b6207e73bd
+Author: Jeremy White <jwhite@codeweavers.com>
+Date:   Mon Aug 31 19:51:45 2015 +0200
+
+    Add a VCARD_DIRECT implemention to the libcacard smartcard support
+    
+    This uses libpcsclite to provide direct communication with a smartcard.
+    
+    Signed-off-by: Jeremy White <jwhite@codeweavers.com>
+    Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ Makefile.am          |   9 +-
+ src/capcsc.c         | 501 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ src/capcsc.h         |  18 ++
+ src/card_7816.c      |   2 +-
+ src/card_7816.h      |   4 +-
+ src/libcacard.syms   |   1 +
+ src/vcard.c          |   2 +-
+ src/vcard.h          |   2 +-
+ src/vcard_emul_nss.c |  11 +-
+ 9 files changed, 542 insertions(+), 8 deletions(-)
+
+commit 97c0121e53a7b835e33e0d34c17de403291d9721
+Author: Jeremy White <jwhite@codeweavers.com>
+Date:   Wed Jan 21 14:46:30 2015 -0600
+
+    Add error checking to vcard_emul_options()
+    
+    Also add an alias of 'nssemul' for the default card
+    of hw=yes hw_type=cac.
+    
+    This allows the spice-gtk client to take a more human
+    friendly set of arguments and relay them through to this code.
+    
+    Signed-off-by: Jeremy White <jwhite@codeweavers.com>
+    Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ src/vcard_emul_nss.c | 39 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 28 insertions(+), 11 deletions(-)
+
+commit 6226aa1e4b724bee0e7ba1d21f92bec10a95a901
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Mon Aug 31 19:09:02 2015 +0200
+
+    build-sys: add --enable-pcsc
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ configure.ac | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+commit 264410e0275103319b4e466d151aa409717bc2ca
+Author: Jeremy White <jwhite@codeweavers.com>
+Date:   Mon Jan 19 08:46:35 2015 -0600
+
+    Bug fix: delete the reader entry after queueing an event, not before
+    
+    As far as I can tell, the vreader_remove_reader function is not presently in
+    use anywhere; I have an upcoming patch set that uses it.
+    
+    Signed-off-by: Jeremy White <jwhite@codeweavers.com>
+    Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ src/vreader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e9bb3d2af900c52991b5d3d168908a1375acbb1f
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Fri Oct 9 16:43:07 2015 +0200
+
+    build-sys: update autoconf-archive macros
+    
+    (alternatively, we could simply require this to be installed, but it's
+    very recent and the autofoo error is unfriendly)
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ m4/ax_append_flag.m4            |  4 ++--
+ m4/ax_compiler_flags.m4         |  4 ++--
+ m4/ax_compiler_flags_cflags.m4  |  7 ++++---
+ m4/ax_compiler_flags_ldflags.m4 | 12 ++++++------
+ 4 files changed, 14 insertions(+), 13 deletions(-)
+
+commit e6eec69ecb5503517193dbaf81d5d3a918a37142
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Fri Oct 9 13:12:55 2015 +0200
+
+    build-sys: vscclient only needs libcacard and gthread/glib
+    
+    Reported by Michael Tokarev.
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e47693ef373453d797dc3ce19d1df52a6ee317df
+Author: Fabiano Fidêncio <fidencio@redhat.com>
+Date:   Wed Oct 7 13:57:25 2015 +0200
+
+    mingw: include <winsock2.h> and link to ws2_32
+    
+    Otherwise the following errors can be faced:
+    src/vscclient-vscclient.o: In function `send_msg':
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:122: undefined
+    reference to `_imp__htonl@4'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:124: undefined
+    reference to `_imp__htonl@4'
+    src/vscclient-vscclient.o: In function `on_host_init':
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:260: undefined
+    reference to `_imp__ntohl@4'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:273: undefined
+    reference to `_imp__ntohl@4'
+    src/vscclient-vscclient.o: In function `do_socket_read':
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:332: undefined
+    reference to `_imp__ntohl@4'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:333: undefined
+    reference to `_imp__ntohl@4'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:334: undefined
+    reference to `_imp__ntohl@4'
+    src/vscclient-vscclient.o: In function `connect_to_qemu':
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:615: undefined
+    reference to `_imp__socket@12'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:628: undefined
+    reference to `_imp__getaddrinfo@16'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:636: undefined
+    reference to `_imp__connect@12'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:645: undefined
+    reference to `_imp__freeaddrinfo@4'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:650: undefined
+    reference to `_imp__freeaddrinfo@4'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:652: undefined
+    reference to `_imp__closesocket@4'
+    src/vscclient-vscclient.o: In function `main':
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:676: undefined
+    reference to `_imp__WSAStartup@8'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:677: undefined
+    reference to `_imp__WSAGetLastError@0'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:778: undefined
+    reference to `_imp__htonl@4'
+    /home/ffidenci/src/upstream/libcacard/src/vscclient.c:791: undefined
+    reference to `_imp__closesocket@4'
+    collect2: error: ld returned 1 exit status
+    Makefile:656: recipe for target 'vscclient.exe' failed
+    make[2]: *** [vscclient.exe] Error 1
+    make[2]: Leaving directory '/home/ffidenci/src/upstream/libcacard'
+    Makefile:774: recipe for target 'all-recursive' failed
+    make[1]: *** [all-recursive] Error 1
+    make[1]: Leaving directory '/home/ffidenci/src/upstream/libcacard'
+    Makefile:495: recipe for target 'all' failed
+    make: *** [all] Error 2
+
+ Makefile.am     | 4 ++++
+ src/vscclient.c | 1 +
+ 2 files changed, 5 insertions(+)
+
+commit 3a1dd01ce6952b3d2d43e8d56e73c9af9a169a18
+Author: Fabiano Fidêncio <fidencio@redhat.com>
+Date:   Mon Oct 5 22:00:46 2015 +0200
+
+    mingw: include ws2tcpip header
+    
+    This header has the definition of getaddrinfo, according to:
+    https://msdn.microsoft.com/en-us/library/windows/desktop/ms738520(v=vs.85).aspx
+
+ src/vscclient.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit f59be583fd98c01e1922e23135167ff028adcf96
+Author: Fabiano Fidêncio <fidencio@redhat.com>
+Date:   Wed Oct 7 14:05:09 2015 +0200
+
+    mingw: avoid problems for using %zd (C99)
+    
+    Otherwise the following problem can be faced:
+    src/vscclient.c: In function 'connect_to_qemu':
+    src/vscclient.c:642:16: error: unknown conversion type character 'z' in format [-Werror=format=]
+             printf("Connected (sizeof Header=%zd)!\n", sizeof(VSCMsgHeader));
+                             ^
+    src/vscclient.c:642:16: error: too many arguments for format [-Werror=format-extra-args]
+
+ Makefile.am  |  4 ++++
+ configure.ac | 13 +++++++++++++
+ 2 files changed, 17 insertions(+)
+
+commit 99caa07a0b618b6be38a10136ae240a2173aa209
+Author: Fabiano Fidêncio <fidencio@redhat.com>
+Date:   Wed Oct 7 13:32:43 2015 +0200
+
+    mingw: remove cac_is_cac_card dead code
+    
+    Without removing cac_is_cac_card the following error can be faced:
+    
+    Cannot export cac_is_cac_card: symbol not defined
+    collect2: error: ld returned 1 exit status
+    
+    Found a not so old QEMU thread about this:
+    https://www.mail-archive.com/qemu-devel%40nongnu.org/msg291698.html
+
+ src/cac.h             | 3 ---
+ src/libcacard.syms    | 1 -
+ src/vcard_emul_type.c | 6 ------
+ 3 files changed, 10 deletions(-)
+
+commit 7962850cc92e51bae8046d2f505ec71adc97aac4
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Mon Sep 21 15:33:57 2015 +0200
+
+    Release v2.5.0
+
+ Makefile.am | 1 +
+ NEWS        | 6 ++++++
+ 2 files changed, 7 insertions(+)
+
+commit 213bfd3d96badaba934fdc283ef97871d9307ee7
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Tue Sep 22 11:58:56 2015 +0200
+
+    build-sys: fix linking on rhel6
+    
+    vscclient needs gthread-2.0, and fails to link on rhel6 without it.
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ Makefile.am  | 3 ++-
+ configure.ac | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+commit 108cd963a8025bc7f07093cfef88474141b1d662
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Mon Sep 21 15:26:28 2015 +0200
+
+    build-sys: use spice-devel list
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 05a15df955dbcc1eb66bdcab0bf0ef3c4a13e748
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Mon Aug 31 01:01:49 2015 +0200
+
+    build-sys: use WARN_CFLAGS/WARN_LDFLAGS and fix errors
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ Makefile.am           |  3 ++-
+ src/card_7816.c       |  4 ++++
+ src/vcard.c           |  4 ++--
+ src/vcard_emul_nss.c  |  9 +++++---
+ src/vcard_emul_type.c |  3 +++
+ src/vreader.c         |  6 +++--
+ src/vscard_common.h   | 11 ++++++++--
+ src/vscclient.c       | 61 ++++++++++++++++++++++++++++-----------------------
+ 8 files changed, 63 insertions(+), 38 deletions(-)
+
+commit cdc61d0c7b363621ab5883ea2cd35ee9e5238538
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Fri Aug 28 15:17:15 2015 +0200
+
+    build-sys: autofoo
+    
+    autofoo-ize
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ Makefile.am                     |  82 ++++++++++
+ README.md                       |  21 +++
+ autogen.sh                      |  36 +++++
+ build-aux/git-version-gen       | 225 +++++++++++++++++++++++++++
+ configure.ac                    |  30 ++++
+ git.mk                          | 333 ++++++++++++++++++++++++++++++++++++++++
+ libcacard.pc.in                 |  14 +-
+ m4/ax_append_compile_flags.m4   |  65 ++++++++
+ m4/ax_append_flag.m4            |  71 +++++++++
+ m4/ax_check_compile_flag.m4     |  74 +++++++++
+ m4/ax_check_enable_debug.m4     | 124 +++++++++++++++
+ m4/ax_code_coverage.m4          | 229 +++++++++++++++++++++++++++
+ m4/ax_compiler_flags.m4         | 158 +++++++++++++++++++
+ m4/ax_compiler_flags_cflags.m4  | 132 ++++++++++++++++
+ m4/ax_compiler_flags_gir.m4     |  60 ++++++++
+ m4/ax_compiler_flags_ldflags.m4 |  75 +++++++++
+ m4/ax_is_release.m4             |  69 +++++++++
+ m4/ax_require_defined.m4        |  37 +++++
+ src/Makefile                    |  45 ------
+ src/Makefile.am                 |   1 +
+ 20 files changed, 1828 insertions(+), 53 deletions(-)
+
+commit bfcdf6c71a340c66b9a1e6de0037f1f2376ab6d1
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Sat Aug 29 00:45:40 2015 +0200
+
+    glib-compat: keep only the required parts
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ src/glib-compat.h | 34 ++--------------------------------
+ 1 file changed, 2 insertions(+), 32 deletions(-)
+
+commit 5ca1b34a2e3390643cf045109535e4ef80e44dee
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Fri Aug 28 15:35:31 2015 +0200
+
+    Add COPYING file
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ COPYING               | 504 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ src/cac.c             |   2 +-
+ src/cac.h             |   2 +-
+ src/card_7816.c       |   2 +-
+ src/card_7816.h       |   2 +-
+ src/card_7816t.h      |   2 +-
+ src/event.c           |   2 +-
+ src/eventt.h          |   2 +-
+ src/link_test.c       |   2 +-
+ src/vcard.c           |   2 +-
+ src/vcard.h           |   2 +-
+ src/vcard_emul.h      |   2 +-
+ src/vcard_emul_nss.c  |   2 +-
+ src/vcard_emul_type.c |   2 +-
+ src/vcard_emul_type.h |   2 +-
+ src/vcardt.h          |   2 +-
+ src/vevent.h          |   2 +-
+ src/vreader.c         |   2 +-
+ src/vreader.h         |   2 +-
+ src/vreadert.h        |   2 +-
+ src/vscard_common.h   |   2 +-
+ src/vscclient.c       |   2 +-
+ 22 files changed, 525 insertions(+), 21 deletions(-)
+
+commit eac1e4a7d11cd8af222cd87cff055ac3879ee31a
+Author: Marc-André Lureau <marcandre.lureau@gmail.com>
+Date:   Sat Aug 29 00:40:04 2015 +0200
+
+    Moving sources to src
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+ include/glib-compat.h       |  168 ------
+ libcacard.pc.in             |   13 +
+ libcacard/Makefile          |   45 --
+ libcacard/cac.c             |  414 --------------
+ libcacard/cac.h             |   31 --
+ libcacard/card_7816.c       |  757 -------------------------
+ libcacard/card_7816.h       |   62 ---
+ libcacard/card_7816t.h      |  165 ------
+ libcacard/event.c           |  103 ----
+ libcacard/eventt.h          |   29 -
+ libcacard/libcacard.pc.in   |   13 -
+ libcacard/libcacard.syms    |   77 ---
+ libcacard/link_test.c       |   22 -
+ libcacard/vcard.c           |  325 -----------
+ libcacard/vcard.h           |   86 ---
+ libcacard/vcard_emul.h      |   66 ---
+ libcacard/vcard_emul_nss.c  | 1274 -------------------------------------------
+ libcacard/vcard_emul_type.c |   57 --
+ libcacard/vcard_emul_type.h |   32 --
+ libcacard/vcardt.c          |   40 --
+ libcacard/vcardt.h          |   59 --
+ libcacard/vcardt_internal.h |    6 -
+ libcacard/vevent.h          |   27 -
+ libcacard/vreader.c         |  578 --------------------
+ libcacard/vreader.h         |   55 --
+ libcacard/vreadert.h        |   24 -
+ libcacard/vscard_common.h   |  178 ------
+ libcacard/vscclient.c       |  785 --------------------------
+ src/Makefile                |   45 ++
+ src/cac.c                   |  414 ++++++++++++++
+ src/cac.h                   |   31 ++
+ src/card_7816.c             |  757 +++++++++++++++++++++++++
+ src/card_7816.h             |   62 +++
+ src/card_7816t.h            |  165 ++++++
+ src/event.c                 |  103 ++++
+ src/eventt.h                |   29 +
+ src/glib-compat.h           |  168 ++++++
+ src/libcacard.syms          |   77 +++
+ src/link_test.c             |   22 +
+ src/vcard.c                 |  325 +++++++++++
+ src/vcard.h                 |   86 +++
+ src/vcard_emul.h            |   66 +++
+ src/vcard_emul_nss.c        | 1274 +++++++++++++++++++++++++++++++++++++++++++
+ src/vcard_emul_type.c       |   57 ++
+ src/vcard_emul_type.h       |   32 ++
+ src/vcardt.c                |   40 ++
+ src/vcardt.h                |   59 ++
+ src/vcardt_internal.h       |    6 +
+ src/vevent.h                |   27 +
+ src/vreader.c               |  578 ++++++++++++++++++++
+ src/vreader.h               |   55 ++
+ src/vreadert.h              |   24 +
+ src/vscard_common.h         |  178 ++++++
+ src/vscclient.c             |  785 ++++++++++++++++++++++++++
+ 54 files changed, 5478 insertions(+), 5478 deletions(-)
+
+commit 53f38f8f294369c0b6361782f3c8accc562292d4
+Author: Veres Lajos <vlajos@gmail.com>
+Date:   Tue Sep 8 22:45:14 2015 +0100
+
+    typofixes - v4
+    
+    Signed-off-by: Veres Lajos <vlajos@gmail.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/card_7816t.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 51fac5ce4b5a10a8cb521b79df72feddd5a8dab3
+Author: Daniel P. Berrange <berrange@redhat.com>
+Date:   Wed Aug 26 12:17:13 2015 +0100
+
+    maint: remove / fix many doubled words
+    
+    Many source files have doubled words (eg "the the", "to to",
+    and so on). Most of these can simply be removed, but a couple
+    were actual mis-spellings (eg "to to" instead of "to do").
+    There was even one triple word score "to to to" :-)
+    
+    Signed-off-by: Daniel P. Berrange <berrange@redhat.com>
+    Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+    Reviewed-by: Markus Armbruster <armbru@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ docs/libcacard.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 7abb909f6f4d6475a358fb06a80634bebb836455
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Wed Jun 17 21:02:03 2015 +0300
+
+    libcacard: pkgconfig: tidy dependent libs
+    
+    libcacard.pc file lists only one package in Requires
+    field, which is nss, while glib-2.0 is also a requiriment.
+    Furthermore, for libraries used internally by the library
+    (this is the way nss and glib are used by libcacard),
+    Requires.private shold be used instead of Requires.
+    
+    Fix both issues.
+    
+    This does not affect linking of qemu because it links
+    with objects from libcacard directly.
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/libcacard.pc.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 269ac769ece9053ccc63a8da00184f4f641ae015
+Author: John Snow <jsnow@redhat.com>
+Date:   Fri May 22 14:13:42 2015 -0400
+
+    glib: remove stale compat functions
+    
+    Since we're bumping the version to 2.22+,
+    remove the now-stale compat functions.
+    
+    Signed-off-by: John Snow <jsnow@redhat.com>
+    Reviewed-by: Markus Armbruster <armbru@redhat.com>
+    Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+    Message-id: 1431469140-22208-2-git-send-email-jsnow@redhat.com
+
+ include/glib-compat.h | 35 -----------------------------------
+ 1 file changed, 35 deletions(-)
+
+commit 8422d073b3788ad6968b5ba3ab1947656e50bdfe
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Thu May 7 13:38:02 2015 +0300
+
+    glib-compat.h: change assert to g_assert
+    
+    include/glib-compat.h defines a bunch of functions based on glib primitives,
+    and uses assert() without including assert.h.  Replace assert() with
+    g_assert() to make the file more self-contained, and to fix compilation
+    breakage after 28507a415a9b1e.
+    
+    Reported-by: Laurent Desnogues <laurent.desnogues@gmail.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Tested-by: Laurent Desnogues <laurent.desnogues@gmail.com>
+
+ include/glib-compat.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 65545be0cd91eca53bc539c8cc9fae01a60bcdd2
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Mon Apr 27 16:29:58 2015 +0300
+
+    libcacard: do not use full paths for include files in the same dir
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 2 +-
+ libcacard/vcardt.c         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 5b27f34cfb3160ad0b83588a9e0821a59630fc14
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Mon Apr 27 12:34:18 2015 +0200
+
+    libcacard: stop including qemu-common.h
+    
+    This is a small step towards making libcacard standalone.
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/cac.c            | 5 ++++-
+ libcacard/card_7816.c      | 4 +++-
+ libcacard/event.c          | 2 +-
+ libcacard/vcard.c          | 4 +++-
+ libcacard/vcard_emul_nss.c | 2 +-
+ libcacard/vreader.c        | 4 +++-
+ libcacard/vscclient.c      | 8 +++++++-
+ 7 files changed, 22 insertions(+), 7 deletions(-)
+
+commit 439b24559c74982ec43dc7e99cd45ff050aae7d5
+Author: Cornelia Huck <cornelia.huck@de.ibm.com>
+Date:   Thu Apr 2 17:17:45 2015 +0200
+
+    glib-compat: fix problems with not-quite glib 2.22
+    
+    Commit 89b516d8b9444ece8ccabb322a9389587c7a7b83 ("glib: add
+    compatibility interface for g_get_monotonic_time()") aimed
+    at making qemu build with old glib versions. At least SLES11SP3,
+    however, contains a backport of g_get_monotonic_time() while
+    keeping the reported glib version at 2.22.
+    
+    Let's work around this by a strategically placed #define.
+    
+    Signed-off-by: Cornelia Huck <cornelia.huck@de.ibm.com>
+    Message-id: 1427987865-433-2-git-send-email-cornelia.huck@de.ibm.com
+    Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+
+ include/glib-compat.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 7c12cf892ed3c2cd6a2a276114d68906da9bcd40
+Author: Daniel P. Berrange <berrange@redhat.com>
+Date:   Tue Feb 3 11:31:30 2015 +0000
+
+    libcacard: stop linking against every single 3rd party library
+    
+    Building QEMU results in a libcacard.so that links against
+    practically the entire world
+    
+    	linux-vdso.so.1 =>  (0x00007fff71e99000)
+    	libssl3.so => /usr/lib64/libssl3.so (0x00007f49f94b6000)
+    	libsmime3.so => /usr/lib64/libsmime3.so (0x00007f49f928e000)
+    	libnss3.so => /usr/lib64/libnss3.so (0x00007f49f8f67000)
+    	libnssutil3.so => /usr/lib64/libnssutil3.so (0x00007f49f8d3b000)
+    	libplds4.so => /usr/lib64/libplds4.so (0x00007f49f8b36000)
+    	libplc4.so => /usr/lib64/libplc4.so (0x00007f49f8931000)
+    	libnspr4.so => /usr/lib64/libnspr4.so (0x00007f49f86f2000)
+    	libdl.so.2 => /usr/lib64/libdl.so.2 (0x00007f49f84ed000)
+    	libm.so.6 => /usr/lib64/libm.so.6 (0x00007f49f81e5000)
+    	libgthread-2.0.so.0 => /usr/lib64/libgthread-2.0.so.0 (0x00007f49f7fe3000)
+    	librt.so.1 => /usr/lib64/librt.so.1 (0x00007f49f7dda000)
+    	libz.so.1 => /usr/lib64/libz.so.1 (0x00007f49f7bc4000)
+    	libcap-ng.so.0 => /usr/lib64/libcap-ng.so.0 (0x00007f49f79be000)
+    	libuuid.so.1 => /usr/lib64/libuuid.so.1 (0x00007f49f77b8000)
+    	libgnutls.so.28 => /usr/lib64/libgnutls.so.28 (0x00007f49f749a000)
+    	libSDL-1.2.so.0 => /usr/lib64/libSDL-1.2.so.0 (0x00007f49f71fd000)
+    	libpthread.so.0 => /usr/lib64/libpthread.so.0 (0x00007f49f6fe0000)
+    	libvte.so.9 => /usr/lib64/libvte.so.9 (0x00007f49f6d3f000)
+    	libXext.so.6 => /usr/lib64/libXext.so.6 (0x00007f49f6b2d000)
+    	libgtk-x11-2.0.so.0 => /usr/lib64/libgtk-x11-2.0.so.0 (0x00007f49f64a0000)
+    	libgdk-x11-2.0.so.0 => /usr/lib64/libgdk-x11-2.0.so.0 (0x00007f49f61de000)
+    	libpangocairo-1.0.so.0 => /usr/lib64/libpangocairo-1.0.so.0 (0x00007f49f5fd1000)
+    	libatk-1.0.so.0 => /usr/lib64/libatk-1.0.so.0 (0x00007f49f5daa000)
+    	libcairo.so.2 => /usr/lib64/libcairo.so.2 (0x00007f49f5a9d000)
+    	libgdk_pixbuf-2.0.so.0 => /usr/lib64/libgdk_pixbuf-2.0.so.0 (0x00007f49f5878000)
+    	libgio-2.0.so.0 => /usr/lib64/libgio-2.0.so.0 (0x00007f49f5500000)
+    	libpangoft2-1.0.so.0 => /usr/lib64/libpangoft2-1.0.so.0 (0x00007f49f52eb000)
+    	libpango-1.0.so.0 => /usr/lib64/libpango-1.0.so.0 (0x00007f49f50a0000)
+    	libgobject-2.0.so.0 => /usr/lib64/libgobject-2.0.so.0 (0x00007f49f4e4e000)
+    	libglib-2.0.so.0 => /usr/lib64/libglib-2.0.so.0 (0x00007f49f4b15000)
+    	libfontconfig.so.1 => /usr/lib64/libfontconfig.so.1 (0x00007f49f48d6000)
+    	libfreetype.so.6 => /usr/lib64/libfreetype.so.6 (0x00007f49f462b000)
+    	libX11.so.6 => /usr/lib64/libX11.so.6 (0x00007f49f42e8000)
+    	libxenstore.so.3.0 => /usr/lib64/libxenstore.so.3.0 (0x00007f49f40de000)
+    	libxenctrl.so.4.4 => /usr/lib64/libxenctrl.so.4.4 (0x00007f49f3eb6000)
+    	libxenguest.so.4.4 => /usr/lib64/libxenguest.so.4.4 (0x00007f49f3c8b000)
+    	libseccomp.so.2 => /usr/lib64/libseccomp.so.2 (0x00007f49f3a74000)
+    	librdmacm.so.1 => /usr/lib64/librdmacm.so.1 (0x00007f49f385d000)
+    	libibverbs.so.1 => /usr/lib64/libibverbs.so.1 (0x00007f49f364a000)
+    	libutil.so.1 => /usr/lib64/libutil.so.1 (0x00007f49f3447000)
+    	libc.so.6 => /usr/lib64/libc.so.6 (0x00007f49f3089000)
+    	/lib64/ld-linux-x86-64.so.2 (0x00007f49f9902000)
+    	libp11-kit.so.0 => /usr/lib64/libp11-kit.so.0 (0x00007f49f2e23000)
+    	libtspi.so.1 => /usr/lib64/libtspi.so.1 (0x00007f49f2bb2000)
+    	libtasn1.so.6 => /usr/lib64/libtasn1.so.6 (0x00007f49f299f000)
+    	libnettle.so.4 => /usr/lib64/libnettle.so.4 (0x00007f49f276d000)
+    	libhogweed.so.2 => /usr/lib64/libhogweed.so.2 (0x00007f49f2545000)
+    	libgmp.so.10 => /usr/lib64/libgmp.so.10 (0x00007f49f22cd000)
+    	libncurses.so.5 => /usr/lib64/libncurses.so.5 (0x00007f49f20a5000)
+    	libtinfo.so.5 => /usr/lib64/libtinfo.so.5 (0x00007f49f1e7a000)
+    	libgmodule-2.0.so.0 => /usr/lib64/libgmodule-2.0.so.0 (0x00007f49f1c76000)
+    	libXfixes.so.3 => /usr/lib64/libXfixes.so.3 (0x00007f49f1a6f000)
+    	libXrender.so.1 => /usr/lib64/libXrender.so.1 (0x00007f49f1865000)
+    	libXinerama.so.1 => /usr/lib64/libXinerama.so.1 (0x00007f49f1662000)
+    	libXi.so.6 => /usr/lib64/libXi.so.6 (0x00007f49f1452000)
+    	libXrandr.so.2 => /usr/lib64/libXrandr.so.2 (0x00007f49f1247000)
+    	libXcursor.so.1 => /usr/lib64/libXcursor.so.1 (0x00007f49f103c000)
+    	libXcomposite.so.1 => /usr/lib64/libXcomposite.so.1 (0x00007f49f0e39000)
+    	libXdamage.so.1 => /usr/lib64/libXdamage.so.1 (0x00007f49f0c35000)
+    	libharfbuzz.so.0 => /usr/lib64/libharfbuzz.so.0 (0x00007f49f09dd000)
+    	libpixman-1.so.0 => /usr/lib64/libpixman-1.so.0 (0x00007f49f072f000)
+    	libEGL.so.1 => /usr/lib64/libEGL.so.1 (0x00007f49f0505000)
+    	libpng16.so.16 => /usr/lib64/libpng16.so.16 (0x00007f49f02d2000)
+    	libxcb-shm.so.0 => /usr/lib64/libxcb-shm.so.0 (0x00007f49f00cd000)
+    	libxcb-render.so.0 => /usr/lib64/libxcb-render.so.0 (0x00007f49efec3000)
+    	libxcb.so.1 => /usr/lib64/libxcb.so.1 (0x00007f49efca1000)
+    	libGL.so.1 => /usr/lib64/libGL.so.1 (0x00007f49efa06000)
+    	libffi.so.6 => /usr/lib64/libffi.so.6 (0x00007f49ef7fe000)
+    	libselinux.so.1 => /usr/lib64/libselinux.so.1 (0x00007f49ef5d8000)
+    	libresolv.so.2 => /usr/lib64/libresolv.so.2 (0x00007f49ef3be000)
+    	libexpat.so.1 => /usr/lib64/libexpat.so.1 (0x00007f49ef193000)
+    	libbz2.so.1 => /usr/lib64/libbz2.so.1 (0x00007f49eef83000)
+    	libgcc_s.so.1 => /usr/lib64/libgcc_s.so.1 (0x00007f49eed6c000)
+    	liblzma.so.5 => /usr/lib64/liblzma.so.5 (0x00007f49eeb46000)
+    	libnl-route-3.so.200 => /usr/lib64/libnl-route-3.so.200 (0x00007f49ee8e2000)
+    	libnl-3.so.200 => /usr/lib64/libnl-3.so.200 (0x00007f49ee6c4000)
+    	libcrypto.so.10 => /usr/lib64/libcrypto.so.10 (0x00007f49ee2d6000)
+    	libssl.so.10 => /usr/lib64/libssl.so.10 (0x00007f49ee067000)
+    	libgraphite2.so.3 => /usr/lib64/libgraphite2.so.3 (0x00007f49ede48000)
+    	libX11-xcb.so.1 => /usr/lib64/libX11-xcb.so.1 (0x00007f49edc46000)
+    	libxcb-dri2.so.0 => /usr/lib64/libxcb-dri2.so.0 (0x00007f49eda41000)
+    	libxcb-xfixes.so.0 => /usr/lib64/libxcb-xfixes.so.0 (0x00007f49ed838000)
+    	libxcb-shape.so.0 => /usr/lib64/libxcb-shape.so.0 (0x00007f49ed634000)
+    	libgbm.so.1 => /usr/lib64/libgbm.so.1 (0x00007f49ed426000)
+    	libwayland-client.so.0 => /usr/lib64/libwayland-client.so.0 (0x00007f49ed217000)
+    	libwayland-server.so.0 => /usr/lib64/libwayland-server.so.0 (0x00007f49ed005000)
+    	libglapi.so.0 => /usr/lib64/libglapi.so.0 (0x00007f49ecddb000)
+    	libdrm.so.2 => /usr/lib64/libdrm.so.2 (0x00007f49ecbce000)
+    	libXau.so.6 => /usr/lib64/libXau.so.6 (0x00007f49ec9ca000)
+    	libxcb-glx.so.0 => /usr/lib64/libxcb-glx.so.0 (0x00007f49ec7b0000)
+    	libxcb-dri3.so.0 => /usr/lib64/libxcb-dri3.so.0 (0x00007f49ec5ad000)
+    	libxcb-present.so.0 => /usr/lib64/libxcb-present.so.0 (0x00007f49ec3aa000)
+    	libxcb-randr.so.0 => /usr/lib64/libxcb-randr.so.0 (0x00007f49ec19b000)
+    	libxcb-sync.so.1 => /usr/lib64/libxcb-sync.so.1 (0x00007f49ebf94000)
+    	libxshmfence.so.1 => /usr/lib64/libxshmfence.so.1 (0x00007f49ebd91000)
+    	libXxf86vm.so.1 => /usr/lib64/libXxf86vm.so.1 (0x00007f49ebb8a000)
+    	libpcre.so.1 => /usr/lib64/libpcre.so.1 (0x00007f49eb91d000)
+    	libgssapi_krb5.so.2 => /usr/lib64/libgssapi_krb5.so.2 (0x00007f49eb6cf000)
+    	libkrb5.so.3 => /usr/lib64/libkrb5.so.3 (0x00007f49eb3ec000)
+    	libcom_err.so.2 => /usr/lib64/libcom_err.so.2 (0x00007f49eb1e8000)
+    	libk5crypto.so.3 => /usr/lib64/libk5crypto.so.3 (0x00007f49eafb4000)
+    	libkrb5support.so.0 => /usr/lib64/libkrb5support.so.0 (0x00007f49eada5000)
+    	libkeyutils.so.1 => /usr/lib64/libkeyutils.so.1 (0x00007f49eaba0000)
+    
+    All libcacard actually needs are the NSS libs. Linking against the entire
+    world is a regression caused by
+    
+      commit 9d171bd9375e4d08feff9adda15163e0811f5f42
+      Author: Michael Tokarev <mjt@tls.msk.ru>
+      Date:   Thu May 8 16:48:27 2014 +0400
+    
+        libcacard: remove libcacard-specific CFLAGS and LIBS from global vars
+    
+    Which removed the setting of the LIBS variable in libcacard/Makefile.
+    
+    Adding it back as an empty assignment brings the linked libs back to a more
+    reasonable set
+    
+    	linux-vdso.so.1 =>  (0x00007fff575c1000)
+    	libssl3.so => /usr/lib64/libssl3.so (0x00007f7f753b1000)
+    	libsmime3.so => /usr/lib64/libsmime3.so (0x00007f7f75189000)
+    	libnss3.so => /usr/lib64/libnss3.so (0x00007f7f74e62000)
+    	libnssutil3.so => /usr/lib64/libnssutil3.so (0x00007f7f74c36000)
+    	libplds4.so => /usr/lib64/libplds4.so (0x00007f7f74a31000)
+    	libplc4.so => /usr/lib64/libplc4.so (0x00007f7f7482c000)
+    	libnspr4.so => /usr/lib64/libnspr4.so (0x00007f7f745ed000)
+    	libpthread.so.0 => /usr/lib64/libpthread.so.0 (0x00007f7f743d0000)
+    	libdl.so.2 => /usr/lib64/libdl.so.2 (0x00007f7f741cc000)
+    	libgthread-2.0.so.0 => /usr/lib64/libgthread-2.0.so.0 (0x00007f7f73fca000)
+    	libglib-2.0.so.0 => /usr/lib64/libglib-2.0.so.0 (0x00007f7f73c90000)
+    	libc.so.6 => /usr/lib64/libc.so.6 (0x00007f7f738d3000)
+    	libz.so.1 => /usr/lib64/libz.so.1 (0x00007f7f736bd000)
+    	librt.so.1 => /usr/lib64/librt.so.1 (0x00007f7f734b4000)
+    	/lib64/ld-linux-x86-64.so.2 (0x00007f7f757fd000)
+    
+    Signed-off-by: Daniel P. Berrange <berrange@redhat.com>
+    Cc: <qemu-stable@nongnu.org>
+    Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 50fc1c5dd931c82c166c051f287858bd98910851
+Author: zhanghailiang <zhang.zhanghailiang@huawei.com>
+Date:   Fri Nov 14 10:18:08 2014 +0800
+
+    libcacard: fix resource leak
+    
+    In function connect_to_qemu(), getaddrinfo() will allocate memory
+    that is stored into server, it should be freed by using freeaddrinfo()
+    before connect_to_qemu() return.
+    
+    Cc: qemu-stable@nongnu.org
+    Reviewed-by: Markus Armbruster <armbru@redhat.com>
+    Signed-off-by: zhanghailiang <zhang.zhanghailiang@huawei.com>
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/vscclient.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit 43d84715e28eac517ad36af4b396f47b00895be1
+Author: Ray Strode <rstrode@redhat.com>
+Date:   Sat Oct 18 22:12:49 2014 -0400
+
+    libcacard: don't free sign buffer while sign op is pending
+    
+    commit 57f97834efe0c208ffadc9d2959f3d3d55580e52 cleaned up
+    the cac_applet_pki_process_apdu function to have a single
+    exit point. Unfortunately, that commit introduced a bug
+    where the sign buffer can get free'd and nullified while
+    it's still being used.
+    
+    This commit corrects the bug by introducing a boolean to
+    track whether or not the sign buffer should be freed in
+    the function exit path.
+    
+    Signed-off-by: Ray Strode <rstrode@redhat.com>
+    Reviewed-by: Alon Levy <alon@pobox.com>
+    Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+
+ libcacard/cac.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+commit b8ebb126188a07a4a5259cb2be72ffe7c1253b00
+Author: Ray Strode <rstrode@redhat.com>
+Date:   Sat Oct 18 22:12:48 2014 -0400
+
+    libcacard: Lock NSS cert db when selecting an applet on an emulated card
+    
+    When a process in a guest uses an emulated smartcard, libcacard running
+    on the host passes the PIN from the guest to the PK11_Authenticate NSS
+    function. The first time PK11_Authenticate is called the passed in PIN
+    is used to unlock the certificate database. Subsequent calls to
+    PK11_Authenticate will transparently succeed, regardless of the passed in
+    PIN. This is a convenience for applications provided by NSS.
+    
+    Of course, the guest may have many applications using the one emulated
+    smart card all driven from the same host QEMU process.  That means if a
+    user enters the right PIN in one program in the guest, and then enters the
+    wrong PIN in another program in the guest, the wrong PIN will still
+    successfully unlock the virtual smartcard.
+    
+    This commit forces the NSS certificate database to be locked anytime an
+    applet is selected on an emulated smartcard by calling vcard_emul_logout.
+    
+    Signed-off-by: Ray Strode <rstrode@redhat.com>
+    Reviewed-By: Robert Relyea <rrelyea@redhat.com>
+    Reviewed-By: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+
+ libcacard/vcard.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit 79ceb49a465c7463a9fdfed17c8b89bfab9d1bbb
+Author: Ray Strode <rstrode@redhat.com>
+Date:   Sat Oct 18 22:12:47 2014 -0400
+
+    libcacard: introduce new vcard_emul_logout
+    
+    vcard_emul_reset currently only logs NSS out, but there is a TODO
+    for potentially sending insertion/removal events when powering down
+    or powering up.
+    
+    For clarity, this commit moves the current guts of vcard_emul_reset to
+    a new vcard_emul_logout function which will never send insertion/removal
+    events. The vcard_emul_reset function now just calls vcard_emul_logout,
+    but also retains its TODO for watching power state transitions and sending
+    insertion/removal events.
+    
+    Signed-off-by: Ray Strode <rstrode@redhat.com>
+    Reviewed-By: Robert Relyea <rrelyea@redhat.com>
+    Reviewed-By: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+
+ libcacard/vcard_emul.h     |  1 +
+ libcacard/vcard_emul_nss.c | 16 ++++++++++++----
+ 2 files changed, 13 insertions(+), 4 deletions(-)
+
+commit 3eb04435ba0f632c404c3f79d47aadbb423916b1
+Author: Gonglei <arei.gonglei@huawei.com>
+Date:   Thu Oct 16 18:59:37 2014 +0800
+
+    glib: add compatibility interface for g_strcmp0()
+    
+    This patch fixes compilation errors when building against glib < 2.16.0
+    due to the missing g_strcmp0() function.
+    
+    Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+    Signed-off-by: Gonglei <arei.gonglei@huawei.com>
+    Message-id: 1413457177-10132-1-git-send-email-arei.gonglei@huawei.com
+    Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+
+ include/glib-compat.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+commit 52ebbfed3985ac86e2f3865e05d534ef6df4ee7e
+Author: Stefan Hajnoczi <stefanha@redhat.com>
+Date:   Wed Oct 15 14:29:30 2014 +0200
+
+    glib: add compatibility interface for g_get_monotonic_time()
+    
+    This patch fixes compilation errors when building against glib <2.28.0
+    due to the missing g_get_monotonic_time() function.
+    
+    The compilation error in tests/libqos/virtio.c was introduced in commit
+    70556264a89a268efba1d7e8e341adcdd7881eb4 ("libqos: use microseconds
+    instead of iterations for virtio timeout").
+    
+    Add a simple g_get_monotonic_time() implementation to glib-compat.h
+    based on code from vhost-user-test.c.
+    
+    Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+    [Igor: add G_TIME_SPAN_SECOND, include glib-compat.h in libqtest.h]
+    Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+    Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+
+ include/glib-compat.h | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+commit 41875913fd8f96f09c19cbde4453f9fd05163550
+Author: zhanghailiang <zhang.zhanghailiang@huawei.com>
+Date:   Wed Sep 10 19:29:07 2014 +0800
+
+    Fix typos and misspellings in comments
+    
+    formated -> formatted
+    gaurantee -> guarantee
+    shear -> sheer
+    
+    Signed-off-by: zhanghailiang <zhang.zhanghailiang@huawei.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vcard_emul_nss.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit f278a796096814d74fcca903e043e5fd2f55e60c
+Author: Ed Maste <emaste@freebsd.org>
+Date:   Wed Jun 18 08:58:00 2014 -0400
+
+    vscclient: Add required headers to fix build on FreeBSD
+    
+    Signed-off-by: Ed Maste <emaste@freebsd.org>
+    Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vscclient.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit c1f1260170a08d94eeba6f07570876edf3895a8d
+Merge: 4a91e43 39d7a20
+Author: Peter Maydell <peter.maydell@linaro.org>
+Date:   Wed Jun 11 15:36:48 2014 +0100
+
+    Merge remote-tracking branch 'remotes/bonzini/configure' into staging
+    
+    * remotes/bonzini/configure:
+      rules.mak: Rewrite unnest-vars
+      configure: unset interfering variables
+      configure: duplicate/incorrect order of -lrt
+      libcacard: improve documentation
+      libcacard: actually use symbols file
+      libcacard: replace qemu thread primitives with glib ones
+      vscclient: use glib thread primitives not qemu
+      glib-compat.h: add new thread API emulation on top of pre-2.31 API
+    
+    Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+
+commit 4a91e43fc3e78e92f67dbbe354d711d4356f1acb
+Author: Markus Armbruster <armbru@redhat.com>
+Date:   Fri Jun 6 21:30:32 2014 +0200
+
+    libcacard: Clean up dead stores before g_free()
+    
+    Signed-off-by: Markus Armbruster <armbru@redhat.com>
+    Reviewed-by: Eric Blake <eblake@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vcard.c   | 4 ----
+ libcacard/vreader.c | 2 --
+ 2 files changed, 6 deletions(-)
+
+commit 796a87ab094b05338ca9130305769bd922d7bd68
+Author: Markus Armbruster <armbru@redhat.com>
+Date:   Fri Jun 6 18:32:08 2014 +0200
+
+    libcacard: Drop superfluous conditionals around g_free()
+    
+    Signed-off-by: Markus Armbruster <armbru@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/cac.c            | 14 ++++----------
+ libcacard/card_7816.c      | 12 +++---------
+ libcacard/vcard.c          | 10 +++-------
+ libcacard/vcard_emul_nss.c |  4 +---
+ libcacard/vreader.c        |  4 +---
+ 5 files changed, 12 insertions(+), 32 deletions(-)
+
+commit 39d7a20eb4e9b93eef61ac3d058b17f0e3bfa3c2
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Thu May 8 12:30:49 2014 +0400
+
+    libcacard: actually use symbols file
+    
+    libtool has an argument for .syms file, which is -export-symbols.
+    There's no argument `-export-syms', and it looks like at least on
+    linux, -export-syms is just ignored.  Use the correct argument,
+    -export-symbols, to actually get the right export list.
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+    Tested-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit c72564ff3ea0fb435c52165a28c7c5a4aab693ea
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Thu May 8 12:30:48 2014 +0400
+
+    libcacard: replace qemu thread primitives with glib ones
+    
+    Replace QemuMutex with GMutex and QemuCond with GCond
+    (with corresponding function changes), to make libcacard
+    independent of qemu internal functions.
+    
+    After this step, none of libcacard internals use any
+    qemu-provided symbols.  Maybe it's a good idea to
+    stop including qemu-common.h internally too.
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+    Tested-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile  |  8 +-------
+ libcacard/event.c   | 23 ++++++++++-------------
+ libcacard/vreader.c | 18 ++++++++----------
+ 3 files changed, 19 insertions(+), 30 deletions(-)
+
+commit b10c7c00480a8177aced46e656a8e66a35989bb3
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Thu May 8 12:30:47 2014 +0400
+
+    vscclient: use glib thread primitives not qemu
+    
+    Use glib-provided thread primitives in vscclient instead of
+    qemu ones, and do not use qemu sockets in there (open-code
+    call to WSAStartup() for windows to initialize things).
+    
+    This way, vscclient becomes more stand-alone, independent on
+    qemu internals.
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+    Tested-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/vscclient.c | 70 +++++++++++++++++++++++++++------------------------
+ 1 file changed, 37 insertions(+), 33 deletions(-)
+
+commit 08c45a139764952579b7d7781380ffa5ea3d284f
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Thu May 8 12:30:46 2014 +0400
+
+    glib-compat.h: add new thread API emulation on top of pre-2.31 API
+    
+    Thread API changed in glib-2.31 significantly.  Before that version,
+    conditionals and mutexes were only allocated dynamically, using
+    _new()/_free() interface.  in 2.31 and up, they're allocated statically
+    as regular variables, and old interface is deprecated.
+    
+    (Note: glib docs says the new interface is available since version
+    2.32, but it was actually introduced in version 2.31).
+    
+    Create the new interface using old primitives, by providing non-opaque
+    definitions of the base types (GCond and GMutex) using GOnces.
+    
+    Replace #ifdeffery around GCond and GMutex in trace/simple.c and
+    coroutine-gthread.c too because it does not work anymore with the new
+    glib-compat.h.
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+    [Use GOnce to support lazy initialization; introduce CompatGMutex
+     and CompatGCond.  - Paolo]
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ include/glib-compat.h | 119 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 119 insertions(+)
+
+commit b85dd1fe88134faf4d8318730a8e36a5a7c16f06
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Thu May 8 21:17:38 2014 +0400
+
+    libcacard: remove useless initializers
+    
+    libcacard has many functions which initializes local variables
+    at declaration time, which are always assigned some values later
+    (often right after declaration).  Clean up these initializers.
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/cac.c            | 14 +++++++-------
+ libcacard/card_7816.c      |  5 ++---
+ libcacard/vcard.c          |  4 ++--
+ libcacard/vcard_emul_nss.c |  6 +++---
+ libcacard/vreader.c        | 10 +++++-----
+ libcacard/vscclient.c      |  4 ++--
+ 6 files changed, 21 insertions(+), 22 deletions(-)
+
+commit 0b25d4b57a3090a87c797623f6c6b9e46e51cd4b
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Sat May 24 00:47:39 2014 +0400
+
+    libcacard: fix wrong array expansion logic
+    
+    The currrent code in libcacard/vcard_emul_nss.c:vcard_emul_options()
+    has a weird bug in variable usage around expanding opts->vreader
+    array.
+    
+    There's a helper variable, vreaderOpt, which is first needlessly
+    initialized to NULL, next, conditionally, only we have to expand
+    opts->vreader, receives array expansion from g_renew(), and next,
+    even if we don't actually perform expansion, the value of this
+    variable is assigned to the actual array, opts->vreader, which
+    was supposed to be expanded.
+    
+    So, since we expand the array by READER_STEP increments, only
+    once in READER_STEP (=4) the code will work, in other 3/4 times
+    it will fail badly.
+    
+    Fix this by not using this temp variable when expanding the
+    array, and by dropping the useless =NULL initializer too -
+    if it wasn't in place initially, compiler would have warned
+    us about this problem at the beginning.
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Reviewed-by: Markus Armbruster <armbru@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+commit eee39377c094fbb01ff324b3560f75b1f18f0918
+Author: Markus Armbruster <armbru@redhat.com>
+Date:   Fri May 23 13:24:39 2014 +0200
+
+    libcacard/vcard_emul_nss: Drop a redundant conditional
+    
+    Bailing out when PK11_FindGenericObjects() returns null ensures the
+    loop that follows it executes at least once.  The "loop did not
+    execute" test right after it is useless.  Drop it.
+    
+    Spotted by Coverity.
+    
+    Signed-off-by: Markus Armbruster <armbru@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vcard_emul_nss.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+commit f2cca7a1a10833cde5ebd1ddd7cd12a907c8b5df
+Author: Markus Armbruster <armbru@redhat.com>
+Date:   Fri May 23 13:24:37 2014 +0200
+
+    libcacard: Convert two leftover realloc() to GLib
+    
+    Signed-off-by: Markus Armbruster <armbru@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/cac.c            | 13 ++-----------
+ libcacard/vcard_emul_nss.c |  7 ++-----
+ 2 files changed, 4 insertions(+), 16 deletions(-)
+
+commit 523878fd3f7792accc6d4c82e0af3472909d2e5a
+Author: Markus Armbruster <armbru@redhat.com>
+Date:   Fri May 23 13:24:36 2014 +0200
+
+    libcacard/vreader: Tighten assertion to clarify intent
+    
+    Bonus: hushes up Coverity.
+    
+    Signed-off-by: Markus Armbruster <armbru@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vreader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a9d8c78f6fb2de442e1e7a2dd2517d465088a212
+Author: Markus Armbruster <armbru@redhat.com>
+Date:   Fri May 23 13:24:35 2014 +0200
+
+    libcacard/vreader: Drop broken recovery from failed assertion
+    
+    We suppress some code when we got unexpected status and assertion
+    checking is off:
+    
+         assert(card_status == VCARD_DONE);
+         if (card_status == VCARD_DONE) {
+             int size = MIN(*receive_buf_len, response->b_total_len);
+             memcpy(receive_buf, response->b_data, size);
+             *receive_buf_len = size;
+        }
+    
+    Such "recovery" is of dubious value even when it works.  This one
+    doesn't: it fails to assign to receive_buf[] and *receive_buf_len,
+    which the callers expect.
+    
+    Make the code unconditional.
+    
+    Signed-off-by: Markus Armbruster <armbru@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vreader.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+commit 88952ad5c967760fdea75f8309a4c8b908c7f5ee
+Author: Markus Armbruster <armbru@redhat.com>
+Date:   Fri May 23 13:24:34 2014 +0200
+
+    libcacard: Plug memory leaks around vreader_get_reader_list()
+    
+    Spotted by Coverity.
+    
+    Signed-off-by: Markus Armbruster <armbru@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vcard_emul_nss.c | 4 ++++
+ libcacard/vscclient.c      | 1 +
+ 2 files changed, 5 insertions(+)
+
+commit 1c81ad3eb801673f6349f35023d11b3de6c50e4a
+Author: Markus Armbruster <armbru@redhat.com>
+Date:   Fri May 23 13:24:33 2014 +0200
+
+    libcacard/vscclient: Bury some dead code
+    
+    Spotted by Coverity.
+    
+    Signed-off-by: Markus Armbruster <armbru@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vscclient.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+commit 199d4d9b90ebfcf725a6be2886f2c02113ba7200
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Thu May 8 19:51:01 2014 +0400
+
+    libcacard: g_malloc cleanups
+    
+    This patch replaces g_malloc() in libcacard into g_new()
+    or g_new0() where appropriate (removing some init-to-zero
+    surrounding code), g_malloc+memcpy into g_memdup() and the
+    like.
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/cac.c            | 11 +++--------
+ libcacard/card_7816.c      | 11 +++++------
+ libcacard/event.c          |  2 +-
+ libcacard/vcard.c          | 22 +++++-----------------
+ libcacard/vcard_emul_nss.c | 12 ++++++------
+ libcacard/vreader.c        | 11 +++--------
+ 6 files changed, 23 insertions(+), 46 deletions(-)
+
+commit c55870a6f5863754bc53a76babeac910ff1531fb
+Merge: b7e8415 5a56946
+Author: Peter Maydell <peter.maydell@linaro.org>
+Date:   Tue May 13 11:30:07 2014 +0100
+
+    Merge remote-tracking branch 'remotes/bonzini/configure' into staging
+    
+    * remotes/bonzini/configure:
+      libcacard: remove libcacard-specific CFLAGS and LIBS from global vars
+      build: simplify and fix fix-obj-vars
+      build: convert some obj-specific CFLAGS to use new foo.o-cflags syntax
+      build: add support for per-object -cflags and -libs to all rules
+      Makefile: use $(INSTALL_LIB) for modules not $(INSTALL_PROG)
+      Makefile.target: use $(INSTALL_PROG) for installing, not $(INSTALL)
+      Makefile: strip tools and modules too
+      build: simplify Makefile.target around unnest-vars invocations
+      build: simplify Makefile.target a bit, use just one rule for softmmu
+      build: Fix per-object variables for Makefile.target
+    
+    Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+
+commit 5a569468fd660a433a2cc865016eb977d0c669cf
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Thu May 8 16:48:27 2014 +0400
+
+    libcacard: remove libcacard-specific CFLAGS and LIBS from global vars
+    
+    Currently all what's needed for single file libcacard/vcard_emul_nss.c
+    (libnss cflags) and hw/usb/ccid-card-emulated.c (libcacard includes)
+    together with the libs is added to global QEMU_CFLAGS and libs_softmmu.
+    
+    Use the cflags only where really used (for two mentioned files), and
+    libs only where needed.
+    
+    While at it, rename variables to better reflect reality: libcacard_*
+    is really nss_*.
+    
+    This needs a bit more tweaking: $(NSS_LIBS) should not contain $glib_libs
+    (ditto for _cflags).  But in order to fix it, some more preparations
+    should be made first.  So add a FIXME comment.
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit b7e8415de3cc39fbddf4f484dc9cb9ed1203d4ff
+Author: Sangho Park <sangho1206.park@samsung.com>
+Date:   Thu May 8 12:47:10 2014 +0400
+
+    glib: fix g_poll early timeout on windows
+    
+    g_poll has a problem on Windows when using
+    timeouts < 10ms, in glib/gpoll.c:
+    
+    /* If not, and we have a significant timeout, poll again with
+     * timeout then. Note that this will return indication for only
+     * one event, or only for messages. We ignore timeouts less than
+     * ten milliseconds as they are mostly pointless on Windows, the
+     * MsgWaitForMultipleObjectsEx() call will timeout right away
+     * anyway.
+     */
+    if (retval == 0 && (timeout == INFINITE || timeout >= 10))
+      retval = poll_rest (poll_msgs, handles, nhandles, fds, nfds, timeout);
+    
+    so whenever g_poll is called with timeout < 10ms it does
+    a quick poll instead of wait, this causes significant performance
+    degradation of QEMU, thus we should use WaitForMultipleObjectsEx
+    directly
+    
+    Signed-off-by: Stanislav Vorobiov <s.vorobiov@samsung.com>
+    Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+ include/glib-compat.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+commit 4169cfbfec755af08454c855f8cb8c5663429d3d
+Author: Alon Levy <alevy@redhat.com>
+Date:   Mon May 5 17:41:32 2014 +0300
+
+    libcacard: remove unnecessary EOL from debug prints
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vreader.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 9fd7072a59336e4a0d913b39e0371135d20a79f0
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Fri May 2 18:35:59 2014 +0400
+
+    libcacard: replace pstrcpy() with memcpy()
+    
+    Commit 2e679780ae86c6ca8 replaced strncpy() with pstrcpy()
+    in one place in libcacard.  This is a qemu-specific function,
+    while libcacard is a stand-alone library (or tries to be).
+    But since we know the exact length of the string to copy,
+    and know that it definitely will fit in the destination
+    buffer, use memcpy() instead, and null-terminate the string
+    after that.
+    
+    An alternative is to use g_strlcpy() or strncpy(), but memcpy()
+    is more than adequate in this place.
+    
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Cc: qemu-trivial@nongnu.org
+    Cc: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 322619a50f29bd578d6c2d0fcbc1f76d35c91f96
+Author: Stefan Hajnoczi <stefanha@redhat.com>
+Date:   Fri May 2 18:35:56 2014 +0400
+
+    glib: move g_poll() replacement into glib-compat.h
+    
+    We have a dedicated header file for wrappers to smooth over glib version
+    differences.  Move the g_poll() definition into glib-compat.h for
+    consistency.
+    
+    Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    Cc: qemu-trivial@nongnu.org
+
+ include/glib-compat.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+commit 7ca871a93cefdb7a01ec44bffd240b015b4b36d2
+Author: Dr. David Alan Gilbert <dgilbert@redhat.com>
+Date:   Thu Jan 30 10:20:32 2014 +0000
+
+    Add a 'name' parameter to qemu_thread_create
+    
+    If enabled, set the thread name at creation (on GNU systems with
+      pthread_set_np)
+    Fix up all the callers with a thread name
+    
+    Signed-off-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
+    Acked-by: Michael S. Tsirkin <mst@redhat.com>
+    Reviewed-by: Laszlo Ersek <lersek@redhat.com>
+
+ libcacard/vscclient.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit c8a8d48ddc1f304b585d652b564425f4b5c1dae2
+Author: Christophe Fergeau <cfergeau@redhat.com>
+Date:   Thu Jan 30 14:56:49 2014 +0100
+
+    libcacard: Don't link with all libraries QEMU links to
+    
+    As described in https://bugzilla.redhat.com/show_bug.cgi?id=987441 ,
+    libcacard currently links to all the libraries QEMU is linking to,
+    including glusterfs libraries, libiscsi, ... libcacard does not need all of
+    these. This patch ensures it's only linked with the libraries it needs.
+    
+    Signed-off-by: Christophe Fergeau <cfergeau@redhat.com>
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit b4d8743e46f3db1ca412821f9408e9e8434f6705
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Sun Dec 1 22:23:35 2013 +0100
+
+    vscclient: do not add a socket watch if there is not data to send
+    
+    Fixes the following error:
+    ** (process:780): CRITICAL **: do_socket_send: assertion
+    `socket_to_send->len != 0' failed
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+    Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+
+ libcacard/vscclient.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+commit 80acda8fcf32ec4f8f95c263b76cccc8b6f371ed
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Thu Dec 5 19:41:28 2013 +0100
+
+    libcacard: Fix compilation for older versions of glib (bug #1258168)
+    
+    See https://bugs.launchpad.net/bugs/1258168
+    
+    libcacard/vscclient.c: In function 'do_socket_read':
+    libcacard/vscclient.c:410: warning: implicit declaration of function 'g_warn_if_reached'
+    libcacard/vscclient.c:410: warning: nested extern declaration of 'g_warn_if_reached'
+    libcacard/vscclient.c: In function 'main':
+    libcacard/vscclient.c:763: warning: implicit declaration of function 'g_byte_array_unref'
+    libcacard/vscclient.c:763: warning: nested extern declaration of 'g_byte_array_unref'
+    ...
+    libcacard/vscclient.o: In function `do_socket_read':
+    libcacard/vscclient.c:410: undefined reference to `g_warn_if_reached'
+    libcacard/vscclient.o: In function `main':
+    libcacard/vscclient.c:763: undefined reference to `g_byte_array_unref'
+    
+    g_warn_if_reached was added in glib 2.16, and g_byte_array_unref is
+    supported since glib 2.22. QEMU requires glib 2.12, so both names must
+    not be used.
+    
+    Instead of showing a warning for code which should not be reached,
+    vscclient better stop running, so g_warn_if_reached is not useful for
+    vscclient.
+    
+    In libcacard/vsclient.c, g_byte_array_unref can be replaced by
+    g_byte_array_free. This is not generally true, so adding a compatibility
+    layer in include/glib-compat.h is no option here.
+    
+    Reported-by: Laurent Desnogues <laurent.desnogues@gmail.com>
+    Reported-by: Don Slutz <dslutz@verizon.com>
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+
+ libcacard/vscclient.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 84f2a81f45667928939bf5afa9731ca0374c410b
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Sun Nov 17 22:12:18 2013 +0100
+
+    libcacard/vcard_emul_nss: Remove unused statement (value stored is never read)
+    
+    Warning from ccc-analyzer:
+    
+    libcacard/vcard_emul_nss.c:937:9: warning:
+     Value stored to 'cert_count' is never read
+            cert_count = options->vreader[i].cert_count;
+            ^            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vcard_emul_nss.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 86af5c1a5eee06f7248b5627a4d77dfdd75889f0
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Sun Nov 17 22:11:23 2013 +0100
+
+    libcacard/cac: Remove unused statement (value stored is never read)
+    
+    Warning from ccc-analyzer:
+    
+    libcacard/cac.c:192:13: warning: Value stored to 'ret' is never read
+                ret = VCARD_DONE;
+                ^     ~~~~~~~~~~
+    
+    Here 'ret' is assigned a value inside of a switch statement and also after
+    that switch statement.
+    
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/cac.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 4507fb611d2fc35eb3d9c51048bfd6eda62d0c6a
+Merge: 99a1df8 6613d09
+Author: Anthony Liguori <anthony@codemonkey.ws>
+Date:   Mon Sep 23 11:53:05 2013 -0500
+
+    Merge remote-tracking branch 'stefanha/block' into staging
+    
+    # By Stefan Hajnoczi (4) and others
+    # Via Stefan Hajnoczi
+    * stefanha/block:
+      virtio-blk: do not relay a previous driver's WCE configuration to the current
+      blockdev: do not default cache.no-flush to true
+      block: don't lose data from last incomplete sector
+      qcow2: Correct snapshots size for overlap check
+      coroutine: fix /perf/nesting coroutine benchmark
+      coroutine: add qemu_coroutine_yield benchmark
+      qemu-timer: do not take the lock in timer_pending
+      qemu-timer: make qemu_timer_mod_ns() and qemu_timer_del() thread-safe
+      qemu-timer: drop outdated signal safety comments
+      osdep: warn if open(O_DIRECT) on fails with EINVAL
+      libcacard: link against qemu-error.o for error_report()
+    
+    Message-id: 1379698931-946-1-git-send-email-stefanha@redhat.com
+
+commit 99a1df8751b123906862ce4d84487e8e46938a9a
+Author: Michael Tokarev <mjt@tls.msk.ru>
+Date:   Sat Sep 14 13:10:16 2013 +0400
+
+    vscclient: remove unnecessary use of uninitialized variable
+    
+    Signed-off-by: Wenchao Xia <xiawenc@linux.vnet.ibm.com>
+    Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vscclient.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit 6613d09116b7027360918dea4f0e75486cc82903
+Author: Stefan Hajnoczi <stefanha@redhat.com>
+Date:   Thu Aug 22 11:29:02 2013 +0200
+
+    libcacard: link against qemu-error.o for error_report()
+    
+    Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+ libcacard/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit b21f0a09ea9e6758a28fd52f879eed8d9571cdd4
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Sun Aug 18 19:40:06 2013 +0200
+
+    misc: Fix some typos in names and comments
+    
+    Most typos were found using a modified version of codespell:
+    
+    accross -> across
+    issueing -> issuing
+    TICNT_THRESHHOLD -> TICNT_THRESHOLD
+    bandwith -> bandwidth
+    VCARD_7816_PROPIETARY -> VCARD_7816_PROPRIETARY
+    occured -> occurred
+    gaurantee -> guarantee
+    sofware -> software
+    
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/card_7816.c  | 2 +-
+ libcacard/card_7816t.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 74f822deabecb68e696540c0b57394f063ae256b
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Sun Jun 16 11:08:52 2013 +0200
+
+    libcacard: Fix cppcheck warning and remove unneeded code
+    
+    The local function vcard_emul_alloc_arrays always returned PR_TRUE.
+    Therefore cppcheck complained about code which handled the
+    non-existent PR_FALSE case.
+    
+    Remove the function's return value and the dead code.
+    
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vcard_emul_nss.c | 22 ++++++----------------
+ 1 file changed, 6 insertions(+), 16 deletions(-)
+
+commit 09bc678344be396860eb121365a3d562cb33c78d
+Author: Alon Levy <alevy@redhat.com>
+Date:   Tue Jun 4 16:23:37 2013 -0400
+
+    libcacard/vscclient: fix leakage of socket on error paths
+    
+    Spotted by Coverity.
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+    Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+ libcacard/vscclient.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+commit 3fd8267558e1572dc707353e476f3afc967a9ca3
+Author: Alon Levy <alevy@redhat.com>
+Date:   Mon Mar 4 21:43:36 2013 +0200
+
+    libcacard/cac: change big switch functions to single return point
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    Reviewed-by: Marc-André Lureau <mlureau@redhat.com>
+
+ libcacard/cac.c | 73 ++++++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 52 insertions(+), 21 deletions(-)
+
+commit 1a1df2bd5fbd45fdda2bbc9c63685288dec17a91
+Author: Alon Levy <alevy@redhat.com>
+Date:   Tue Mar 5 16:27:43 2013 +0200
+
+    libcacard: move atr setting from macro to function
+    
+    Only because qemu's checkpatch complains about it.
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    Reviewed-by: Marc-André Lureau <mlureau@redhat.com>
+
+ libcacard/vcard_emul_nss.c  | 14 +++++++++++---
+ libcacard/vcardt.c          | 40 ++++++++++++++++++++++++++++++++++++++++
+ libcacard/vcardt.h          | 13 -------------
+ libcacard/vcardt_internal.h |  6 ++++++
+ 4 files changed, 57 insertions(+), 16 deletions(-)
+
+commit 983bbd0bda8bb9c0392b668b3edeac1530c3c559
+Author: Alon Levy <alevy@redhat.com>
+Date:   Tue Mar 5 15:32:19 2013 +0200
+
+    libcacard/vreader: add debugging messages for apdu
+    
+    Using g_debug with log domain libcacard
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    Reviewed-by: Marc-André Lureau <mlureau@redhat.com>
+
+ libcacard/cac.c     |  7 -----
+ libcacard/cac.h     |  8 ++++++
+ libcacard/vreader.c | 77 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 85 insertions(+), 7 deletions(-)
+
+commit 3c8ed11f9beed751df116a1015acd98a78b09aac
+Author: Alon Levy <alevy@redhat.com>
+Date:   Tue Mar 5 15:35:24 2013 +0200
+
+    libcacard: change default ATR
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    Reviewed-by: Marc-André Lureau <mlureau@redhat.com>
+
+ libcacard/vcardt.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+commit 8f159d0833a37cbe09376dd2f398c6595ad02dc9
+Author: Marc-André Lureau <mlureau@redhat.com>
+Date:   Wed Mar 20 14:07:49 2013 +0100
+
+    libcacard: remove default libcoolkey loading
+    
+    Use only the modules defined in the NSS database.
+    
+    Signed-off-by: Marc-André Lureau <mlureau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
+
+commit 38639522167c22a05c7e04bc109b536d5462694e
+Author: Marc-André Lureau <mlureau@redhat.com>
+Date:   Wed Mar 20 14:07:48 2013 +0100
+
+    libcacard: remove sql: prefix
+    
+    For some reason, with sql:/ prefix, the PKCS11 modules are not loaded.
+    
+    This patch goes on top of Alon smartcard series.
+    
+    Signed-off-by: Marc-André Lureau <mlureau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+commit d099310c3956ee49daaf65b4ce370c84359c0fcf
+Author: Marc-André Lureau <mlureau@redhat.com>
+Date:   Mon Feb 25 23:31:16 2013 +0100
+
+    libcacard: teach vscclient to use GMainLoop for portability
+    
+    This version handles non-blocking sending and receiving from the
+    socket.
+    
+    Signed-off-by: Marc-André Lureau <mlureau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vscclient.c | 391 +++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 246 insertions(+), 145 deletions(-)
+
+commit 53587fded844e5775c6121bd6faf63ad7d0a36f2
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Mon Feb 25 23:31:15 2013 +0100
+
+    libcacard: vscclient to use QemuThread for portability
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vscclient.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+commit fb788bd68eb1b9166f6a7cd3801224e97250cd92
+Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+Date:   Mon Feb 25 23:31:14 2013 +0100
+
+    libcacard: split vscclient main() from socket reading
+    
+    Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vscclient.c | 314 ++++++++++++++++++++++++++------------------------
+ 1 file changed, 162 insertions(+), 152 deletions(-)
+
+commit 4dcd211208d7185d77331031c50870418a0940d9
+Author: Marc-André Lureau <mlureau@redhat.com>
+Date:   Wed Feb 27 21:08:06 2013 +0100
+
+    libcacard: use system config directory for nss db on win32
+    
+    It's a bit nicer to look for default database under
+    CSIDL_COMMON_APPDATA\pki\nss rather that /etc/pki/nss.
+    
+    Signed-off-by: Marc-André Lureau <mlureau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+commit 16f28cb6a2c9d01187931980adca54d2cba990fe
+Author: Marc-André Lureau <mlureau@redhat.com>
+Date:   Sun Dec 2 22:00:55 2012 +0100
+
+    libcacard: correct T0 historical bytes size
+    
+    The VCARD_ATR_PREFIX macro adds a prefix of 6 characters only.
+    
+    pcsc_scan was complaining before the patch:
+    
+    + Historical bytes: 56 43 41 52 44 5F 4E 53 53
+     ERROR! ATR is truncated: 2 byte(s) is/are missing
+    
+    Signed-off-by: Marc-André Lureau <mlureau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcardt.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 7d5d3fc97b714fda943b776abbb5217afcb51934
+Author: Anthony Liguori <aliguori@us.ibm.com>
+Date:   Mon Mar 25 10:23:56 2013 -0500
+
+    glib: add a compatibility interface for g_timeout_add_seconds
+    
+    Signed-off-by: Anthony Liguori <aliguori@us.ibm.com>
+
+ include/glib-compat.h | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+commit 6ec25c35f1299fb871e3aac25c187a4dc288aabf
+Author: Markus Armbruster <armbru@redhat.com>
+Date:   Tue Jan 22 11:08:04 2013 +0100
+
+    libcacard: Fix unchecked strdup() by converting to g_strdup()
+    
+    Note that we already free with g_free().
+    
+    Signed-off-by: Markus Armbruster <armbru@redhat.com>
+    Reviewed-by: Eric Blake <eblake@redhat.com>
+    Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 4 ++--
+ libcacard/vreader.c        | 2 +-
+ libcacard/vscclient.c      | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+commit b49ffdffca29d1ba983ec49d18c60a4fd13d3d30
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Fri Dec 21 09:45:20 2012 +0100
+
+    build: fold trace-obj-y into libqemuutil.a
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 214039846913f2c91470c09464877b6d3c4e2875
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Thu Dec 20 15:58:44 2012 +0100
+
+    build: move libqemuutil.a components to util/
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit ab016400744a21df5b05914d572e604e9e7af8dc
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Thu Dec 20 18:24:27 2012 +0100
+
+    libcacard: list oslib-obj-y file explicitly
+    
+    We will grow the list of files in the next patches, but libcacard
+    should remain slim.
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+commit 206861aff0eba7fb68edfd822e1b1cbcd9d06bd2
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Fri Dec 21 08:42:03 2012 +0100
+
+    libcacard: link vscclient to dynamic library
+    
+    There is no reason for vscclient to duplicate the code.  rules.mak
+    takes care of invoking libtool to do the link.
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+commit e4fdd0a5f39a20eafa62051a264e7b6afadfb132
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Fri Dec 21 08:34:49 2012 +0100
+
+    libcacard: rewrite Makefile in non-recursive style
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 35 ++++++++++-------------------------
+ 1 file changed, 10 insertions(+), 25 deletions(-)
+
+commit c7669d3fd8de1601b5d5e63f605c76b1b6e8f2c8
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Thu Dec 20 18:19:51 2012 +0100
+
+    libcacard: add list of exported symbols
+    
+    Do not export internal QEMU symbols.
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile       |  3 +-
+ libcacard/libcacard.syms | 77 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 79 insertions(+), 1 deletion(-)
+
+commit ec190c04ea8e512338420f67e9127790f75bc631
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Fri Dec 21 09:13:10 2012 +0100
+
+    libcacard: use per-target variable definitions
+    
+    This lets the libcacard Makefile use more rules.mak magic.
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+commit 95b203677dd7c42a5ed84ed87aea135b97ec46b0
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Fri Dec 21 09:16:33 2012 +0100
+
+    libcacard: prepare to use -y trick in the Makefile
+    
+    Rename variables to follow the conventions of the rest of the build
+    systems.
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+commit bfe0b496071d2993cf7e8462fcc00e6902077747
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Thu Dec 20 20:40:35 2012 +0100
+
+    libcacard: require libtool to build it
+    
+    Do not fail at build time, instead just disable the library if libtool
+    is not present.
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 8 --------
+ 1 file changed, 8 deletions(-)
+
+commit e6031597ddc62481ce1fcc8979d392adb8b7a5ba
+Author: Alon Levy <alevy@redhat.com>
+Date:   Wed Nov 28 11:16:26 2012 +0200
+
+    libcacard: fix missing symbol in libcacard.so
+    
+    Before patch:
+    $ make libcacard.la
+    $ nm ./libcacard/.libs/libcacard.so.0.0.0 | grep " U " | \
+        egrep -v "(g_)|(GLIBC)|(SECMOD)|(PK11)|(CERT)|(NSS)|(PORT)|(PR)"
+                     U error_set
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 5506f60b11a54d457599a1757c88f563f2582b8b
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Thu Dec 20 18:57:45 2012 +0100
+
+    build: support linking with libtool objects/libraries
+    
+    This patch moves the complication of using libtool to the generic
+    rules.mak file.
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+commit 967f6adcec35c96a089ce23878031e6161d9ac02
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Thu Dec 20 18:32:53 2012 +0100
+
+    build: make libtool verbose when making with V=1
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 5079744ef99014d166c40dbdd7d3dae7a4279fc4
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Mon Dec 17 18:20:00 2012 +0100
+
+    misc: move include files to include/qemu/
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/event.c     | 2 +-
+ libcacard/vreader.c   | 2 +-
+ libcacard/vscclient.c | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 2f9ad1a12dbd9baf327ae0e7bc47a61cf4132368
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Mon Nov 19 09:45:20 2012 +0100
+
+    libcacard: link in stubs
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 85ebd70aaae7967e92f737847ef09bdf176d11ef
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Mon Nov 19 09:45:06 2012 +0100
+
+    libcacard: make unnesting rules available to Makefile.objs
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 00385729546c89d9e16d6c8c7b4643d644c7fb87
+Merge: 521ed4f ab604dd
+Author: Aurelien Jarno <aurelien@aurel32.net>
+Date:   Sat Oct 6 18:54:14 2012 +0200
+
+    Merge branch 'trivial-patches' of git://github.com/stefanha/qemu
+    
+    * 'trivial-patches' of git://github.com/stefanha/qemu:
+      versatilepb: Use symbolic indices for ARM PIC
+      qdev: kill bogus comment
+      qemu-barrier: Fix compiler version check for future gcc versions
+      hw: Add missing 'static' attribute for QEMUMachine
+      cleanup useless return sentence
+      qemu-sockets: Fix compiler warning (regression for MinGW)
+      vnc: Fix spelling (hellmen -> hellman) in comment
+      slirp: Fix spelling in comment (enought -> enough, insure -> ensure)
+      tcg/arm: Use tcg_out_mov_reg rather than inline equivalent code
+      cpu: Add missing 'static' attribute to qemu_global_mutex
+      configure: Support empty target list (--target-list=)
+      hw: Fix return value check for bdrv_read, bdrv_write
+
+commit ab604dda51766c40362563a41905c3b3f75abbc4
+Author: Amos Kong <akong@redhat.com>
+Date:   Sat Sep 29 13:36:21 2012 +0800
+
+    cleanup useless return sentence
+    
+    This patch cleans up return sentences in the end of void functions.
+    
+    Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+    Signed-off-by: Amos Kong <akong@redhat.com>
+    Signed-off-by: Stefan Hajnoczi <stefanha@gmail.com>
+
+ libcacard/vcard.c          | 1 -
+ libcacard/vcard_emul_nss.c | 3 ---
+ libcacard/vreader.c        | 1 -
+ 3 files changed, 5 deletions(-)
+
+commit 521ed4f3afe8909c87a58cf0b09061f9fc91cd12
+Author: Jim Meyering <meyering@redhat.com>
+Date:   Thu Oct 4 13:09:59 2012 +0200
+
+    libcacard/vcard_emul_nss: use pstrcpy in place of strncpy
+    
+    Replace strncpy+NUL-terminate use with use of pstrcpy.
+    This requires linking with cutils.o (or else vssclient doesn't link),
+    so add that in the Makefile.
+    
+    Acked-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Jim Meyering <meyering@redhat.com>
+    Signed-off-by: Anthony Liguori <aliguori@us.ibm.com>
+
+ libcacard/Makefile         | 3 +++
+ libcacard/vcard_emul_nss.c | 3 +--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+commit 99f16ae1ee3f112968af0588bfc98c8724b61b76
+Author: Blue Swirl <blauwirbel@gmail.com>
+Date:   Sun Jun 10 10:18:54 2012 +0000
+
+    libcacard: build fixes
+    
+    Link trace objects to fix these errors:
+      LINK  vscclient
+    oslib-posix.o: In function `trace_qemu_vfree':
+    /src/qemu/obj-amd64/./trace.h:39: undefined reference to `trace1'
+    oslib-posix.o: In function `trace_qemu_memalign':
+    /src/qemu/obj-amd64/./trace.h:31: undefined reference to `trace3'
+    oslib-posix.o: In function `trace_qemu_vmalloc':
+    /src/qemu/obj-amd64/./trace.h:35: undefined reference to `trace2'
+    
+    Add LDFLAGS to vscclient link command.
+    
+    Clean up also in subdirectories of libcacard.
+    
+    Use quiet-command for sed invocation.
+    
+    Signed-off-by: Blue Swirl <blauwirbel@gmail.com>
+    Reviewed-by: Andreas Färber <afaerber@suse.de>
+    Acked-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/Makefile | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+commit 41b2c7a8094c84c8f04790d705bab101bbbd6849
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Tue May 29 11:40:24 2012 +0200
+
+    build: libcacard Makefile cleanups
+    
+    Build vscclient from toplevel Makefile, limit usage of vpath.
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+ libcacard/Makefile | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
+
+commit 66825ebf02f1a0df036d048f744d9a9aa032f69a
+Author: Alon Levy <alevy@redhat.com>
+Date:   Thu Mar 22 20:00:36 2012 +0200
+
+    libcacard/vcard_emul_nss: add warning for old coolkey
+    
+    Older coolkey versions (before the future fix of RHBZ 802435) have
+    a fake card reader created if no reader is detected during module
+    initialization. Warn libcacard users if the faulty coolkey is detected
+    by checking for the fake reader name "E-Gate 0 0".
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+commit 98045c93271f6a1e99b89f4233b55d0419e18916
+Author: Alon Levy <alevy@redhat.com>
+Date:   Thu Mar 22 19:58:58 2012 +0200
+
+    libcacard/vcard_emul_nss: handle no readers at startup
+    
+    When starting with no readers, coolkey should show no slots (with
+    RHBZ 806038 fixed). Fix initialization to launch the event handling
+    thread for each module that isn't the internal module regardless of the
+    number of slots detected for it at initialization time, since slot
+    number may start as 0 and is dynamic.
+    
+    RHBZ: 802435
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
+
+commit eb8dd0ca82cf0bdeae343bb135fbd7fc09ed9561
+Author: Alon Levy <alevy@redhat.com>
+Date:   Thu Mar 22 19:44:49 2012 +0200
+
+    libcacard/vcard_emul_nss: don't stop thread when there are no slots
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+commit 16673a09500121825826a8b97dc1f0ce53e7c6f5
+Merge: 1e8aa10 6c1302d
+Author: Anthony Liguori <aliguori@us.ibm.com>
+Date:   Fri Mar 9 12:30:20 2012 -0600
+
+    Merge remote-tracking branch 'stefanha/trivial-patches' into staging
+    
+    * stefanha/trivial-patches:
+      configure: Quote the configure args printed in config.log
+      osdep: Remove local definition of macro offsetof
+      libcacard: Spelling and grammar fixes in documentation
+      Spelling fixes in comments (it's -> its)
+      vnc: Add break statement
+      libcacard: Use format specifier %u instead of %d for unsigned values
+      Fix sign of sscanf format specifiers
+      block/vmdk: Fix warning from splint (comparision of unsigned value)
+      qmp: Fix spelling fourty -> forty
+      qom: Fix spelling in documentation
+      sh7750: Remove redundant 'struct' from MemoryRegionOps
+
+commit 1e8aa1086b23980c975d56d4f3eeaa7af5d7d8f2
+Author: Hans de Goede <hdegoede@redhat.com>
+Date:   Fri Mar 2 16:49:44 2012 +0100
+
+    libcacard: Fix compilation with gcc-4.7
+    
+    VCARD_ATR_PREFIX is used as part of an array initializer so it should
+    not have () around it, so far this happened to work, but gcc-4.7 does
+    not like it.
+    
+    Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+    Signed-off-by: Anthony Liguori <aliguori@us.ibm.com>
+
+ libcacard/vcardt.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 6c1302da2bce81dc9c34a0d89d78d82fb02eb454
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Mon Feb 27 22:57:24 2012 +0100
+
+    libcacard: Spelling and grammar fixes in documentation
+    
+    * it's -> its
+    
+    * it's -> it is (that's no fix, but makes future checks easier)
+    
+    * this functions -> this function
+    
+    * replacable -> replaceable
+    
+    * reader's -> readers
+    
+    * logins into -> logs into
+    
+    v2:
+    Also replace 'aid' by 'AID' (thanks to Peter Maydell for this hint).
+    
+    v3:
+    Fix sentence (contributed by Alon Levy / Robert Relyea).
+    
+    Cc: Alon Levy <alevy@redhat.com>
+    Cc: Robert Relyea <rrelyea@redhat.com>
+    Cc: Peter Maydell <peter.maydell@linaro.org>
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ docs/libcacard.txt | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+commit e5488aebbd3fd2a401f3748e72f941f27abc89c1
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Sun Feb 26 18:46:12 2012 +0100
+
+    Spelling fixes in comments (it's -> its)
+    
+    * it's -> its (fixed for all files)
+    * dont -> don't (only fixed in a line which was touched by the previous fix)
+    * distrub -> disturb (fixed in the same line)
+    
+    Reviewed-by: Andreas Färber <afaerber@suse.de>
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ libcacard/vscclient.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 298bf38b527d4bfef3edcecf4a0ad899cb8bb71e
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Sat Feb 25 14:54:17 2012 +0100
+
+    libcacard: Use format specifier %u instead of %d for unsigned values
+    
+    splint reported warnings for those code statements.
+    
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ libcacard/vscclient.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+commit f58bd27cbd00d44f9f27f6dd80c32e50d97844ac
+Author: Alon Levy <alevy@redhat.com>
+Date:   Sun Feb 26 17:09:24 2012 +0100
+
+    libcacard: fix reported ATR length
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+
+ libcacard/vcardt.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit ecc2eab2130496ec362fec08cf5a7e78fac00e2d
+Merge: d8b06be a5732cb
+Author: Kevin Wolf <kwolf@redhat.com>
+Date:   Thu Feb 23 10:33:55 2012 +0100
+
+    Merge qemu-iotests into for-anthony
+
+commit a5732cb53814f6ed397f24c984fb6ecb2356e3ef
+Author: Christoph Hellwig <hch@brick.lst.de>
+Date:   Mon Jun 22 18:29:05 2009 +0200
+
+    qemu-iotests: Initial import into the public repository.
+    
+    Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+
+commit d8b06be29ff320c190bc9950aa48c117fd95ac7c
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Wed Feb 8 22:41:37 2012 +0100
+
+    make: Remove duplicate use of GLIB_CFLAGS
+    
+    Makefile, Makefile.hw, Makefile.target and libcacard/Makefile
+    added GLIB_CFLAGS to QEMU_CFLAGS.
+    
+    Makefile.objs does this, too, and is included by all other
+    Makefiles, so GLIB_CFLAGS were added twice (reported by malc).
+    
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+    Signed-off-by: malc <av1474@comtv.ru>
+
+ libcacard/Makefile | 2 --
+ 1 file changed, 2 deletions(-)
+
+commit c91222af158bdb77ac23e488304fb5db0b2a400a
+Author: Dong Xu Wang <wdongxu@linux.vnet.ibm.com>
+Date:   Tue Nov 22 18:06:18 2011 +0800
+
+    fix spelling in libcacard sub directory
+    
+    Signed-off-by: Dong Xu Wang <wdongxu@linux.vnet.ibm.com>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ libcacard/card_7816.c      | 4 ++--
+ libcacard/card_7816.h      | 2 +-
+ libcacard/vcard_emul_nss.c | 2 +-
+ libcacard/vscard_common.h  | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
+
+commit 6ccd1e53652b64df04434201e7d465811b3b8961
+Author: Matthias Brugger <matthias.bgg@gmail.com>
+Date:   Tue Nov 15 11:57:14 2011 +0000
+
+    Fixing some spelling in docs/libcacard.txt
+    
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ docs/libcacard.txt | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+commit e8c4ad12d94f737c83b7d7d668c9f452c729af3b
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Sun Nov 13 22:24:27 2011 +0100
+
+    Fix some spelling bugs in documentation and comments
+    
+    These errors were detected by codespell:
+    
+    remaing -> remaining
+    soley -> solely
+    virutal -> virtual
+    seperate -> separate
+    
+    libcacard.txt still needs some more patches.
+    
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ docs/libcacard.txt | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 80ac0350eb9a3d6f12a8a1bb158e7ec3ff44ada4
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Sun Nov 13 22:24:26 2011 +0100
+
+    Fix spelling in documentation and comments (similiar -> similar)
+    
+    This bug was detected by codespell.
+    In mips_mipssim.c a grammatical error was fixed, too.
+    
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ docs/libcacard.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 9dcc36b5e30994a21ba27690efb16cd6bc3fc1af
+Author: Stefan Weil <sw@weilnetz.de>
+Date:   Wed Oct 19 21:03:22 2011 +0200
+
+    libcacard: Fix wrong assertion (reported by cppcheck)
+    
+    assert("...") will never do anything. This assertion handles a case
+    which should never occur, so it must be assert(!"...").
+    
+    Cc: Alon Levy <alevy@redhat.com>
+    Signed-off-by: Stefan Weil <sw@weilnetz.de>
+
+ libcacard/card_7816.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e556cf132e2838fe3dcb958e7fa1b6442cc9f6e2
+Author: Alon Levy <alevy@redhat.com>
+Date:   Tue Sep 27 17:19:25 2011 +0300
+
+    libcacard/vscclient: fix error paths for socket creation
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vscclient.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+commit 7c126739b34a03ab046caaf0b22bb37b611b21c6
+Author: Alon Levy <alevy@redhat.com>
+Date:   Tue Sep 27 17:18:50 2011 +0300
+
+    libcacard/cac: fix typo in cac_delete_pki_applet_private
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/cac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit aaea98e6ff86880300718cd4359c055ad53930cd
+Author: Jan Kiszka <jan.kiszka@siemens.com>
+Date:   Wed Sep 21 09:18:32 2011 +0200
+
+    Silence make if nothing is to do for libcacard
+    
+    Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ libcacard/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 41993eda21d6a3631982d92bcc91324e096474e5
+Author: Brad Smith <brad@comstyle.com>
+Date:   Fri Sep 2 10:53:26 2011 +0100
+
+    libcacard: use INSTALL_DATA for data
+    
+    Signed-off-by: Brad Smith <brad@comstyle.com>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ libcacard/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ae37e1a7fd3c6d3fa986d5fc8f5466583d3661e7
+Author: Stefan Weil <weil@mail.berlios.de>
+Date:   Sun Aug 28 21:45:40 2011 +0200
+
+    Fix spelling in comments and debug messages (recieve -> receive)
+    
+    Signed-off-by: Stefan Weil <weil@mail.berlios.de>
+    Reviewed-by: Andreas Färber <andreas.faerber@web.de>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ libcacard/vscclient.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 287cc743d99eb845f5d2135f72a94767bd5f7981
+Author: Brad <brad@comstyle.com>
+Date:   Mon Aug 22 16:39:59 2011 -0400
+
+    Fix build on OpenBSD with BSD userland emu and smartcard NSS enabled
+    
+    The first issue is the hard coded POSIX Real Time extensions library in the
+    libcacard/Makefile. From looking at the code it doesn't seem this is necessary
+    anyway. Robert Relyea seems to think it most likely isn't necessary.
+    
+    The second issue was the missing exclusion of the BSD userland binary
+    builds from the addition of this Makefile target for the smartcard NSS
+    code which breaks the builds if smartcard NSS support is enabled.
+    
+    pastebin clip of the build failure..
+    
+    http://pastebin.com/raw.php?i=BLCKd3s6
+    
+    Signed-off-by: Brad Smith <brad@comstyle.com>
+    Signed-off-by: Blue Swirl <blauwirbel@gmail.com>
+
+ libcacard/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit eb222958ce988f9d38e329e1ba5d34eda466fb7f
+Author: Brad <brad@comstyle.com>
+Date:   Sat Aug 13 20:30:14 2011 -0400
+
+    Improvements to libtool support.
+    
+    Improvements to the libtool support in QEMU. Replace hard coded
+    libtool in the infrastructure with $(LIBTOOL) and allow
+    overriding the libtool binary used via the configure
+    script.
+    
+    Reviewed-by: Andreas F=E4rber <andreas.faerber@web.de>
+    Signed-off-by: Brad Smith <brad@comstyle.com>
+    Signed-off-by: Anthony Liguori <aliguori@us.ibm.com>
+
+ libcacard/Makefile | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit 13a5471ccc3495e7900cda0d4fad831f29d29f30
+Author: Diego Elio Pettenò <flameeyes@flameeyes.eu>
+Date:   Sun Aug 14 15:31:24 2011 +0200
+
+    build: list libraries after objects, for proper linkage
+    
+    Without this change, when using -Wl,--as-needed with GNU linker, the
+    libraries would be discarded.
+    
+    Signed-off-by: Diego Elio Pettenò <flameeyes@flameeyes.eu>
+    Signed-off-by: Anthony Liguori <aliguori@us.ibm.com>
+
+ libcacard/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit ec49acd2f4c2c35958d38bbe7840f0b1b54137c1
+Author: Anthony Liguori <aliguori@us.ibm.com>
+Date:   Sun Aug 21 08:36:21 2011 -0500
+
+    Remove remenants of qemu_malloc
+    
+    This covers the various check commands
+    
+    Signed-off-by: Anthony Liguori <aliguori@us.ibm.com>
+
+ libcacard/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 5efbf562205ceee0ffe2d39c6cda1683e6342f83
+Author: Anthony Liguori <aliguori@us.ibm.com>
+Date:   Sat Aug 20 22:09:37 2011 -0500
+
+    Use glib memory allocation and free functions
+    
+    qemu_malloc/qemu_free no longer exist after this commit.
+    
+    Signed-off-by: Anthony Liguori <aliguori@us.ibm.com>
+
+ libcacard/cac.c            | 16 ++++++++--------
+ libcacard/card_7816.c      | 28 +++++++++++++--------------
+ libcacard/event.c          |  4 ++--
+ libcacard/vcard.c          | 20 +++++++++----------
+ libcacard/vcard_emul_nss.c | 48 +++++++++++++++++++++++-----------------------
+ libcacard/vreader.c        | 14 +++++++-------
+ libcacard/vscclient.c      |  2 +-
+ 7 files changed, 66 insertions(+), 66 deletions(-)
+
+commit 29fb96a4c6bc49e6dba8d0353bd1aafad2a0c2ec
+Author: Anthony Liguori <aliguori@us.ibm.com>
+Date:   Sat Aug 20 22:18:37 2011 -0500
+
+    Make glib mandatory and fixup utils appropriately
+    
+    Signed-off-by: Anthony Liguori <aliguori@us.ibm.com>
+
+ libcacard/Makefile | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit a53d1ae4d58d81e91045084206e49c6d2cbd76e5
+Author: Alon Levy <alevy@redhat.com>
+Date:   Thu Jul 28 12:34:13 2011 +0300
+
+    libcacard: use INSTALL_DATA for data
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/Makefile | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+commit a70b08e8aeb5a341e48f81ca73cb818716e1268a
+Author: Alon Levy <alevy@redhat.com>
+Date:   Mon Jun 27 11:58:20 2011 +0200
+
+    libcacard: add pc file, install it + includes
+    
+    Additionally:
+     + add --includedir configure parameters
+     + make install-libcacard install vscclient as well
+
+ libcacard/Makefile        | 27 ++++++++++++++++++++++++---
+ libcacard/libcacard.pc.in | 13 +++++++++++++
+ 2 files changed, 37 insertions(+), 3 deletions(-)
+
+commit 57c5b6145c7290ba3a29cb9534a393ace3c683b7
+Author: Christophe Fergeau <cfergeau@redhat.com>
+Date:   Fri Jul 22 13:42:20 2011 +0200
+
+    libcacard: replace copy_string with strndup
+    
+    copy_string reimplements strndup, this commit removes it and
+    replaces all copy_string uses with strndup.
+    
+    Signed-off-by: Christophe Fergeau <cfergeau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 23 ++++++-----------------
+ 1 file changed, 6 insertions(+), 17 deletions(-)
+
+commit 1ae3ef3c88fe2e7beeb5dce4cd3e89bdd0d51acd
+Author: Christophe Fergeau <cfergeau@redhat.com>
+Date:   Fri Jul 22 13:42:19 2011 +0200
+
+    libcacard: introduce NEXT_TOKEN macro
+    
+    vcard_emul_options now has repetitive code to read the current
+    token and advance to the next. After the previous changes,
+    this repetitive code can be moved in a NEXT_TOKEN macro to
+    avoid having this code duplicated.
+    
+    Signed-off-by: Christophe Fergeau <cfergeau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 71 ++++++++++++++++------------------------------
+ 1 file changed, 24 insertions(+), 47 deletions(-)
+
+commit c3c3609a0f444b76590d5af0bc2f1a432e8a5a4b
+Author: Christophe Fergeau <cfergeau@redhat.com>
+Date:   Fri Jul 22 13:42:18 2011 +0200
+
+    libcacard: fix soft=... parsing in vcard_emul_options
+    
+    The previous parser had copy and paste errors when computing
+    vname_length and type_params_length, "name" was used instead
+    of respectively vname and type_params. This led to length that could
+    be bigger than the input string, and to access out of the array
+    bounds when trying to copy these strings. valgrind rightfully
+    complained about this. It also didn't handle empty fields correctly,
+    
+    Signed-off-by: Christophe Fergeau <cfergeau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 45 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 28 insertions(+), 17 deletions(-)
+
+commit c034dda00c7ea0e0ae0a4cc2a9d2f22ed81f412f
+Author: Christophe Fergeau <cfergeau@redhat.com>
+Date:   Fri Jul 22 13:42:17 2011 +0200
+
+    libcacard: s/strip(args++)/strip(args+1)
+    
+    vcard_emul_options used args = strip(args++) a few times, which
+    was not returning the expected result since the rest of the code
+    expected args to be increased by at least 1, which is not the case
+    if *args is not a blank space when this function is called.
+    Replace these calls by "strip(args+1)" which will do what we expect.
+    
+    Signed-off-by: Christophe Fergeau <cfergeau@redhat.com>
+    Reviewed-by: Alon Levy <alevy@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 5335a2491a4b1695954c8e70985e8c92bd9ba9c4
+Author: Christophe Fergeau <cfergeau@redhat.com>
+Date:   Mon Jul 4 18:10:43 2011 +0200
+
+    libcacard: don't leak vcard_emul_alloc_arrays mem
+    
+    vcard_emul_mirror_card and vcard_emul_init use
+    vcard_emul_alloc_arrays to allocate memory for temporary arrays
+    which will contain elements that in the end will be used one by
+    one in cac_card_init. The arrays themselves are never stored
+    anywhere, they are only used as temporary containers. Hence
+    the memory that was allocated for these arrays should be freed
+    after use or they will be leaked.
+
+ libcacard/vcard_emul_nss.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+commit 9b9dc7cfbd717c875131643a26bb912b6a7c91aa
+Author: Robert Relyea <rrelyea@redhat.com>
+Date:   Tue Jun 28 17:28:22 2011 +0200
+
+    libcacard/vcard_emul_nss: support cards lying about CKM_RSA_X_509 support
+    
+    Some tokens claim to do CKM_RSA_X_509, but then choke when they try to do the
+    actual operations. Try to detect those cases and treat them as if the token
+    didn't claim support for X_509.
+    
+    Signed-off-by: Robert Relyea <rrelyea@redhat.com>
+
+ libcacard/vcard_emul_nss.c | 133 +++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 127 insertions(+), 6 deletions(-)
+
+commit f1f96f2572a1b573ce1c6aad32c630426abf99d3
+Merge: f02c0d6 4a78766
+Author: Anthony Liguori <aliguori@us.ibm.com>
+Date:   Wed Jun 15 09:03:49 2011 -0500
+
+    Merge remote-tracking branch 'alon/pull-libcacard-1' into staging
+
+commit f02c0d634cd65f972540403ff4b50618b7f730ba
+Author: Alon Levy <alevy@redhat.com>
+Date:   Sun May 15 11:51:28 2011 +0300
+
+    libcacard: add libcacard.la target
+    
+    No flag to configure is required. Instead, added a libcacard.la target that
+    is not built by default, only when requested explicitly via:
+    
+    mkdir build
+    cd build
+    ../configure
+    make libcacard.la
+    make install-libcacard
+    
+    Uses libtool to do actual linking of object files and shared library, and
+    installing. Tested only under linux, but supposed to work on other systems as
+    well.
+    
+    If libtool isn't found you get a message complaining about that, only at build
+    time (since it is not a default target I did not add a message at configure
+    time).
+    
+    New build artifacts:
+     .libs subdirectories (at <buildroot> and <buildroot>/libcacard)
+     *.lo files (at same locations as the respective o files)
+    
+    Added %.lo : %.c rule that uses libtool.
+    Updated clean rule to clean up those artifacts.
+    Added specific rule to call dtrace with libtool wrapper (note that because of
+    a current upstream dtrace bug fixed by systemtap b1568fd85 commit the -fPIC flag
+    isn't actually passed on. still current dtrace+libtool produced object links fine).
+    If libtool is missing any of the following targets will complain and exit 1:
+     any subdir: *.lo
+     root and libcacard: libcacard.la, libcacard-instsall
+    
+    Tested to link and load with all tracing backends.
+
+ libcacard/Makefile | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
+
+commit 4a78766f4b6a3882d124033ab99a1e6c58c56d7b
+Author: Alon Levy <alevy@redhat.com>
+Date:   Sun May 15 11:51:28 2011 +0300
+
+    libcacard: add libcacard.la target
+    
+    No flag to configure is required. Instead, added a libcacard.la target that
+    is not built by default, only when requested explicitly via:
+    
+    mkdir build
+    cd build
+    ../configure
+    make libcacard.la
+    make install-libcacard
+    
+    Uses libtool to do actual linking of object files and shared library, and
+    installing. Tested only under linux, but supposed to work on other systems as
+    well.
+    
+    If libtool isn't found you get a message complaining about that, only at build
+    time (since it is not a default target I did not add a message at configure
+    time).
+    
+    New build artifacts:
+     .libs subdirectories (at <buildroot> and <buildroot>/libcacard)
+     *.lo files (at same locations as the respective o files)
+    
+    Added %.lo : %.c rule that uses libtool.
+    Updated clean rule to clean up those artifacts.
+    Added specific rule to call dtrace with libtool wrapper (note that because of
+    a current upstream dtrace bug fixed by systemtap b1568fd85 commit the -fPIC flag
+    isn't actually passed on. still current dtrace+libtool produced object links fine).
+    If libtool is missing any of the following targets will complain and exit 1:
+     any subdir: *.lo
+     root and libcacard: libcacard.la, libcacard-instsall
+    
+    Tested to link and load with all tracing backends.
+
+ libcacard/Makefile | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
+
+commit 0865a0af53e951941f834e63bf6bf69bfbe07b5e
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Date:   Mon May 2 09:54:03 2011 +0200
+
+    libcacard: add correct subdirectory dependencies
+    
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+    Cc: qemu-trivial@nongnu.org
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ libcacard/Makefile | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
+
+commit 198b9d1cb9826172d73d2a90ebb677beeef6f06e
+Author: Stefan Weil <weil@mail.berlios.de>
+Date:   Thu Apr 28 17:20:34 2011 +0200
+
+    Fix typos in comments (existance -> existence)
+    
+    Signed-off-by: Stefan Weil <weil@mail.berlios.de>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ libcacard/vscard_common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 1b3f75ca17e143335fff0f13afe82c7421214479
+Author: Stefan Weil <weil@mail.berlios.de>
+Date:   Thu Apr 28 17:20:31 2011 +0200
+
+    Fix typo in comment (consistant -> consistent)
+    
+    Signed-off-by: Stefan Weil <weil@mail.berlios.de>
+    Signed-off-by: Stefan Hajnoczi <stefanha@linux.vnet.ibm.com>
+
+ libcacard/vcard_emul_nss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 6b0211e584b32e9224a2378c231c1c63a3264c49
+Author: Alon Levy <alevy@redhat.com>
+Date:   Wed Apr 13 14:42:00 2011 +0300
+
+    libcacard: fix opposite usage of isspace
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    Tested-by: Hans de Goede <hdegoede@redhat.com>
+    Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+
+ libcacard/vcard_emul_nss.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 0e30993747a3f26b12db43913ec881b847421cdd
+Author: Robert Relyea <rrelyea@redhat.com>
+Date:   Thu Mar 17 16:39:46 2011 +0200
+
+    libcacard: add docs
+
+ docs/libcacard.txt | 483 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 483 insertions(+)
+
+commit 15231cd82f6bc266538410bbed09b614ea9489a2
+Author: Robert Relyea <rrelyea@redhat.com>
+Date:   Thu Mar 17 16:38:30 2011 +0200
+
+    libcacard: add vscclient
+    
+    client to talk to ccid-card-passthru and use smartcard on client to
+    perform actual operations.
+    
+    v23->v24 changes: (Jes Sorensen review 2)
+     * use qemu_socket instead of socket
+     * use fprintf(stderr,..) for errors
+     * remove unneccessary includes since using qemu_common.h
+
+ libcacard/Makefile    |   7 +-
+ libcacard/vscclient.c | 652 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 658 insertions(+), 1 deletion(-)
+
+commit 3b7042ff8124ae411825b5bbb549ec0d58aa2dea
+Author: Robert Relyea <rrelyea@redhat.com>
+Date:   Sun Nov 28 16:36:38 2010 +0200
+
+    libcacard: initial commit
+    
+    libcacard emulates a Common Access Card (CAC) which is a standard
+    for smartcards. It is used by the emulated ccid card introduced in
+    a following patch. Docs are available in docs/libcacard.txt
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    
+    ---
+    
+    changes from v24->v25:
+     * Fix out of tree builds.
+     * Fix build with linux-user targets.
+    
+    changes from v23->v24: (Jes Sorensen review 2)
+     * Makefile.target: use obj-$(CONFIG_*) +=
+     * remove unrequired includes, include qemu-common before qemu-thread
+      * required adding #define NO_NSPR_10_SUPPORT (harmless)
+    
+    changes from v22->v23:
+     * configure fixes: (reported by Stefan Hajnoczi)
+      * test a = b, not a == b (second isn't portable)
+      * quote $source_path in case it contains spaces
+       - this doesn't really help since there are many other places
+         that need similar fixes, not introduced by this patch.
+    
+    changes from v21->v22:
+     * fix configure to not link libcacard if nss not found
+        (reported by Stefan Hajnoczi)
+     * fix vscclient linkage with simpletrace backend
+        (reported by Stefan Hajnoczi)
+     * card_7816.c: add missing break in ERROR_DATA_NOT_FOUND
+        (reported by William van de Velde)
+    
+    changes from v20->v21: (Jes Sorensen review)
+     * use qemu infrastructure: qemu-thread, qemu-common (qemu_malloc
+      and qemu_free), error_report
+     * assert instead of ASSERT
+     * cosmetic fixes
+     * use strpbrk and isspace
+     * add --disable-nss --enable-nss here, instead of in the final patch.
+     * split vscclient, passthru and docs to following patches.
+    
+    changes from v19->v20:
+     * checkpatch.pl
+    
+    changes from v15->v16:
+    
+    Build:
+     * don't erase self with distclean
+     * fix make clean after make distclean
+     * Makefile: make vscclient link quiet
+    
+    Behavioral:
+     * vcard_emul_nss: load coolkey in more situations
+     * vscclient:
+      * use hton,ntoh
+      * send init on connect, only start vevent thread on response
+      * read payload after header check, before type switch
+      * remove Reconnect
+      * update for vscard_common changes, empty Flush implementation
+    
+    Style/Whitespace:
+     * fix wrong variable usage
+     * remove unused variable
+     * use only C style comments
+      * add copyright header
+      * fix tabulation
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    
+    libcacard: fix out of tree builds
+
+ libcacard/Makefile          |   20 +
+ libcacard/cac.c             |  403 +++++++++++++++
+ libcacard/cac.h             |   23 +
+ libcacard/card_7816.c       |  763 ++++++++++++++++++++++++++++
+ libcacard/card_7816.h       |   62 +++
+ libcacard/card_7816t.h      |  165 ++++++
+ libcacard/event.c           |  106 ++++
+ libcacard/eventt.h          |   29 ++
+ libcacard/link_test.c       |   22 +
+ libcacard/vcard.c           |  339 +++++++++++++
+ libcacard/vcard.h           |   86 ++++
+ libcacard/vcard_emul.h      |   65 +++
+ libcacard/vcard_emul_nss.c  | 1157 +++++++++++++++++++++++++++++++++++++++++++
+ libcacard/vcard_emul_type.c |   57 +++
+ libcacard/vcard_emul_type.h |   32 ++
+ libcacard/vcardt.h          |   64 +++
+ libcacard/vevent.h          |   27 +
+ libcacard/vreader.c         |  513 +++++++++++++++++++
+ libcacard/vreader.h         |   55 ++
+ libcacard/vreadert.h        |   24 +
+ 20 files changed, 4012 insertions(+)
+
+commit 4ff8618988f67ef0315b22ba0d405d98e14eca70
+Author: Alon Levy <alevy@redhat.com>
+Date:   Wed Feb 2 21:48:04 2011 +0200
+
+    introduce libcacard/vscard_common.h
+    
+    ---
+    
+    Signed-off-by: Alon Levy <alevy@redhat.com>
+    
+    v20->v21 changes: (Jes Sorensen review)
+     * license set to 2+
+     * long comment fixes, remove empty line at eof.
+     * add reference to COPYING
+    
+    v19->v20 changes:
+     * checkpatch.pl
+    
+    v15->v16 changes:
+    
+    Protocol change:
+     * VSCMsgInit capabilities and magic
+     * removed ReaderResponse, will use Error instead with code==VSC_SUCCESS.
+     * adaded Flush and FlushComplete, remove Reconnect.
+     * define VSCARD_MAGIC
+     * added error code VSC_SUCCESS.
+    
+    Fixes:
+     * update VSCMsgInit comment
+     * fix message type enum
+     * remove underscore from wrapping define
+     * update copyright
+     * updated comments.
+     * Header comment updated
+     * remove C++ style comment
+     * fix comment for VSCMsgError
+     * give names to enums in typedefs
+
+ libcacard/vscard_common.h | 178 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 178 insertions(+)
+
+commit e63c3dc74bfb90e4522d075d0d5a7600c5145745
+Author: (no author) <(no author)@c046a42c-6fe2-441c-8c8c-71466251a162>
+Date:   Tue Feb 18 22:55:36 2003 +0000
+
+    Standard project directories initialized by cvs2svn.
+    
+    git-svn-id: svn://svn.savannah.nongnu.org/qemu/trunk@1 c046a42c-6fe2-441c-8c8c-71466251a162
